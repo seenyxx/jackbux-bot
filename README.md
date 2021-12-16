@@ -1,6 +1,14 @@
 # Simple discord bot template
 
-Simple typescript discord bot template, includes support for slash commands and normal commands
+Simple typescript discord bot template, includes support for slash commands and normal commands.
+
+## Features
+* Command handler for slash commands and normal commands
+  * Includes permission checking
+  * Built-in help command
+  * Configurable cooldowns
+* Event handler
+
 
 ## Setup
 
