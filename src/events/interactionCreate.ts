@@ -1,6 +1,8 @@
 import { defEvent } from '../util/events'
-import { handleSlashCommand } from '../util/handlers'
+import { handleSlashCommand, commandError } from '../util/handlers'
 
 export default defEvent('interactionCreate', async (client, interaction) => {
-  handleSlashCommand(client, interaction)
+  handleSlashCommand(client, interaction).catch((e) => {
+    if (interaction.isCommand()) interaction.reply({ embeds: [commandError(e.toString())] })
+  })
 })

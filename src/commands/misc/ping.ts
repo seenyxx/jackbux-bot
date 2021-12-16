@@ -22,6 +22,9 @@ export default defCommand({
   description: 'Pong!',
   usage: '',
   category: 'misc',
+  permissions: {
+    member: ['ADMINISTRATOR'],
+  },
   run: async (client, message) => {
     message.reply({ embeds: [createEmbed(client)] })
   },

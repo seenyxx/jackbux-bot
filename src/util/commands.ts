@@ -7,9 +7,8 @@ export interface CommandProps {
   usage: string
   cooldown: number
   permissions?: {
-    channel: PermissionString[]
-    member: PermissionString[]
-    bot: PermissionString[]
+    member?: PermissionString[]
+    bot?: PermissionString[]
   }
   aliases?: string[]
   category: string

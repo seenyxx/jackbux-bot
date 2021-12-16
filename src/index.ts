@@ -6,7 +6,7 @@ import betterLogging from 'better-logging'
 process.on('uncaughtException', (e) => console.error(e.message))
 process.on('unhandledRejection', (e) => console.error(e))
 
-betterLogging(console)
+// betterLogging(console)
 
 dotenv.config()
 
