@@ -1,3 +1,4 @@
+import { SlashCommandBuilder } from '@discordjs/builders'
 import { Client, Interaction, Message, PermissionString } from 'discord.js'
 
 export interface CommandProps {
@@ -5,24 +6,21 @@ export interface CommandProps {
   description: string
   usage: string
   cooldown: number
-  permissions: {
+  permissions?: {
     channel: PermissionString[]
     member: PermissionString[]
     bot: PermissionString[]
   }
   aliases?: string[]
-  category?: string[]
+  category: string
 
   run: CommandFunction
+  slashCommand: SlashCommandBuilder
   interaction: CommandInteraction
 }
 
-export type CommandFunction = (client: Client, message: Message, args?: string[]) => Promise<any>
-export type CommandInteraction = (
-  client: Client,
-  interaction: Interaction,
-  args?: string[]
-) => Promise<any>
+export type CommandFunction = (client: Client, message: Message, args: string[]) => Promise<any>
+export type CommandInteraction = (client: Client, interaction: Interaction) => Promise<any>
 
 export function defCommand(props: CommandProps): CommandProps {
   return props

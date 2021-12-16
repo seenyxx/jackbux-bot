@@ -1,14 +1,16 @@
-import { Awaitable, ClientEvents } from 'discord.js'
+import { Awaitable, Client, ClientEvents } from 'discord.js'
 
 export interface BotEvent<K extends keyof ClientEvents> {
   event: K
-  run: (...args: ClientEvents[K]) => Awaitable<void>
+  run: EventRun<K>
 }
 
-export function defEvent<K extends keyof ClientEvents>(
-  event: K,
-  run: (...args: ClientEvents[K]) => Awaitable<void>
-): BotEvent<K> {
+export type EventRun<K extends keyof ClientEvents> = (
+  client: Client,
+  ...args: ClientEvents[K]
+) => Awaitable<void>
+
+export function defEvent<K extends keyof ClientEvents>(event: K, run: EventRun<K>): BotEvent<K> {
   return {
     event: event,
     run: run,
