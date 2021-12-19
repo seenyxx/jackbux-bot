@@ -1,5 +1,8 @@
+import betterLogging from 'better-logging';
 import { ShardingManager } from 'discord.js'
 import dotenv from 'dotenv'
+
+betterLogging(console)
 
 // Handles exceptions for correcting later
 process.on('uncaughtException', (e) => console.error(e.message))
