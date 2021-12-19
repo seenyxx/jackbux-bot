@@ -21,7 +21,7 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-      - uses: actionsx/prettier@v2
-        name: 'Fix code formatting'
+      - name: Prettify code
+        uses: creyD/prettier_action@v4.1
         with:
-          args: --write ./src/
+          prettier_options: --write **/*.{js,md,ts}
