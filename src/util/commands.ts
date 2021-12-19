@@ -6,6 +6,8 @@ export interface CommandProps {
   description: string
   usage: string
   cooldown: number
+  hidden?: boolean
+  commandPreference: 'slash' | 'message'
   permissions?: {
     member?: PermissionString[]
     bot?: PermissionString[]
@@ -23,4 +25,37 @@ export type CommandInteraction = (client: Client, interaction: Interaction) => P
 
 export function defCommand(props: CommandProps): CommandProps {
   return props
+}
+
+export async function disabled(client: Client, message: Message, args: string[]) {
+  return
+}
+
+export async function deprecated(client: Client, message: Message, args: string[]) {
+  message.reply('This command is deprecated.')
+}
+
+export async function interactionDisabled(client: Client, interaction: Interaction) {
+  return
+}
+
+export async function interactionDeprecated(client: Client, interaction: Interaction) {
+  if (!interaction.isCommand()) return
+
+  interaction.reply('This command is deprecated.')
+}
+
+export function commandDeprecated(type: 'slash' | 'message', altCommands?: string): CommandFunction | CommandInteraction {
+  if (type == 'slash') {
+    return async function interactionDeprecated(client: Client, interaction: Interaction) {
+      if (!interaction.isCommand()) return
+    
+      interaction.reply(`This command is deprecated. ${altCommands ? `Use \`${altCommands}\`` : ''}`)
+    }
+  }
+  else {
+    return async function deprecated(client: Client, message: Message, args: string[]) {
+      message.reply(`This command is deprecated. ${altCommands ? `Use \`${altCommands}\`` : ''}`)
+    }
+  }
 }

@@ -1,4 +1,4 @@
-import betterLogging from 'better-logging';
+import betterLogging from 'better-logging'
 import { ShardingManager } from 'discord.js'
 import dotenv from 'dotenv'
 

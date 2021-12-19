@@ -234,23 +234,23 @@ export function loadCommands(subDir?: string) {
 
       slashCommandsBody.push(commandProps.slashCommand.toJSON())
       slashCommandsCache.set('body', slashCommandsBody)
+      if (!commandProps.hidden) {
+        let categoryId = commandProps.category
+          .replace(/[^\p{L}\p{N}\p{P}\p{Z}^$\n]/gu, '')
+          .toLowerCase()
+          .trim()
 
-      let categoryId = commandProps.category
-        .replace(/[^\p{L}\p{N}\p{P}\p{Z}^$\n]/gu, '')
-        .toLowerCase()
-        .trim()
+        let cat = categoryMap.get(categoryId)
 
-      let cat = categoryMap.get(categoryId)
+        if (!cat) {
+          categoryMap.set(categoryId, [])
+        }
+        let catArray = categoryMap.get(categoryId) as string[]
 
-      if (!cat) {
-        categoryMap.set(categoryId, [])
+        catArray.push(commandProps.name)
+
+        categoryMap.set(categoryId, catArray)
       }
-
-      let catArray = categoryMap.get(categoryId) as string[]
-
-      catArray.push(commandProps.name)
-
-      categoryMap.set(categoryId, catArray)
     } else if (!file.endsWith('.js') && file.indexOf('.') == -1) {
       loadCommands(file)
     }
@@ -315,13 +315,23 @@ export function helpForCategory(catStr: string) {
     return embed
   } else if (commandExist(cat)) {
     let commandProps = commandsMap.get(cat)
+
+    if (commandProps?.hidden) {
+      const embed = new MessageEmbed()
+        .setColor('RED')
+        .setTitle('Error')
+        .setDescription('Category/Command not found.')
+
+      return embed
+    }
+
     const embed = new MessageEmbed()
       .setColor('GREEN')
       .setTitle(`Help for command: ${cat}`)
       .setDescription(
         `**Description:** ${commandProps?.description}\n**Category:** ${
           commandProps?.category
-        }\n**Usage:** \`${`${globalPrefix}${
+        }\n**Usage:** \`${`${commandProps?.commandPreference == 'slash' ? '/' : globalPrefix}${
           commandProps?.name
         } ${commandProps?.usage.trim()}`.trim()}\`\n**Aliases:** ${
           commandProps?.aliases ? commandProps?.aliases?.join(' ') : 'None'
@@ -353,6 +363,7 @@ export function helpMain() {
 
   categoryMap.forEach((val, key) => {
     let preview = `\`${val.slice(0, 3).join('` `')}\`...`
+
     embed.addField(capitalizeFirstLetter(key), preview)
   })
 

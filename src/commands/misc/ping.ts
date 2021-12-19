@@ -22,6 +22,7 @@ export default defCommand({
   description: 'Pong!',
   usage: '',
   category: 'misc',
+  commandPreference: 'slash',
   run: async (client, message) => {
     message.reply({ embeds: [createEmbed(client)] })
   },

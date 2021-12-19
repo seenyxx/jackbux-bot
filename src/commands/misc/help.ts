@@ -14,6 +14,7 @@ export default defCommand({
   cooldown: 3,
   usage: '<Category/Cmd>',
   description: 'Help command',
+  commandPreference: 'slash',
   run: async (client, message, args) => {
     if (args.length > 0) {
       let cmd = args[0]
