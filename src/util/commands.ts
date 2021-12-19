@@ -45,15 +45,19 @@ export async function interactionDeprecated(client: Client, interaction: Interac
   interaction.reply('This command is deprecated.')
 }
 
-export function commandDeprecated(type: 'slash' | 'message', altCommands?: string): CommandFunction | CommandInteraction {
+export function commandDeprecated(
+  type: 'slash' | 'message',
+  altCommands?: string
+): CommandFunction | CommandInteraction {
   if (type == 'slash') {
     return async function interactionDeprecated(client: Client, interaction: Interaction) {
       if (!interaction.isCommand()) return
-    
-      interaction.reply(`This command is deprecated. ${altCommands ? `Use \`${altCommands}\`` : ''}`)
+
+      interaction.reply(
+        `This command is deprecated. ${altCommands ? `Use \`${altCommands}\`` : ''}`
+      )
     }
-  }
-  else {
+  } else {
     return async function deprecated(client: Client, message: Message, args: string[]) {
       message.reply(`This command is deprecated. ${altCommands ? `Use \`${altCommands}\`` : ''}`)
     }
