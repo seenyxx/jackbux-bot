@@ -1,12 +1,10 @@
 import { REST } from '@discordjs/rest'
-import betterLogging from 'better-logging'
 import { Routes } from 'discord-api-types/v9'
 import {
   Client,
   Collection,
   GuildMember,
   Interaction,
-  MemberMention,
   Message,
   MessageEmbed,
   PermissionString,
@@ -28,20 +26,12 @@ let slashCommandsCache = new Collection<string, any[]>()
 let globalPrefix = process.env.PREFIX as string
 
 export function checkPermissions(member: GuildMember, perms: PermissionString[]) {
-  let hasPerms = true
-
-  for (const perm of perms) {
-    if (!member.permissions.has(perm)) {
-      hasPerms = false
-    }
-  }
-
-  return hasPerms
+  return perms.some((perm) => member.permissions.has(perm))
 }
 
 export function formatPermissionDiff(reqPerms: PermissionString[], perms: PermissionString[]) {
   let permsDiff = perms.filter((x) => !reqPerms.includes(x))
-  return `\`${permsDiff.join(', ')}\``
+  return `\`${permsDiff.join('`, `')}\``.replace('_', ' ')
 }
 
 export async function handleMessageCommand(client: Client, message: Message) {
@@ -71,7 +61,7 @@ export async function handleMessageCommand(client: Client, message: Message) {
       if (commandProps.permissions?.member) {
         if (!checkPermissions(message.member as GuildMember, commandProps.permissions.member)) {
           throw new Error(
-            `You are missing permissions to perform this command. ${formatPermissionDiff(
+            `You are missing the following permissions to perform this command. \n${formatPermissionDiff(
               message.member?.permissions.toArray() as PermissionString[],
               commandProps.permissions.member
             )}`
@@ -82,7 +72,7 @@ export async function handleMessageCommand(client: Client, message: Message) {
       if (commandProps.permissions?.bot) {
         if (!checkPermissions(message.guild.me as GuildMember, commandProps.permissions.bot)) {
           throw new Error(
-            `I am missing permissions to perform this command. ${formatPermissionDiff(
+            `I am missing the following permissions to perform this command. \n${formatPermissionDiff(
               message.guild.me?.permissions.toArray() as PermissionString[],
               commandProps.permissions.bot
             )}`
@@ -112,7 +102,7 @@ export async function handleMessageCommand(client: Client, message: Message) {
     if (commandProps.permissions?.member) {
       if (!checkPermissions(message.member as GuildMember, commandProps.permissions.member)) {
         throw new Error(
-          `You are missing permissions to perform this command. ${formatPermissionDiff(
+          `You are missing the following permissions to perform this command. \n${formatPermissionDiff(
             message.member?.permissions.toArray() as PermissionString[],
             commandProps.permissions.member
           )}`
@@ -123,7 +113,7 @@ export async function handleMessageCommand(client: Client, message: Message) {
     if (commandProps.permissions?.bot) {
       if (!checkPermissions(message.guild.me as GuildMember, commandProps.permissions.bot)) {
         throw new Error(
-          `I am missing permissions to perform this command. ${formatPermissionDiff(
+          `I am missing the following permissions to perform this command. \n${formatPermissionDiff(
             message.guild.me?.permissions.toArray() as PermissionString[],
             commandProps.permissions.bot
           )}`
@@ -154,6 +144,28 @@ export async function handleSlashCommand(client: Client, interaction: Interactio
     let currentTimestamp = Date.now()
 
     if (currentTimestamp > cooldownTimestamp) {
+      if (commandProps.permissions?.member) {
+        if (!checkPermissions(interaction.member as GuildMember, commandProps.permissions.member)) {
+          throw new Error(
+            `You are missing the following permissions to perform this command. \n${formatPermissionDiff(
+              interaction.memberPermissions?.toArray() as PermissionString[],
+              commandProps.permissions.member
+            )}`
+          )
+        }
+      }
+
+      if (commandProps.permissions?.bot) {
+        if (!checkPermissions(interaction.guild?.me as GuildMember, commandProps.permissions.bot)) {
+          throw new Error(
+            `I am missing the following permissions to perform this command. \n${formatPermissionDiff(
+              interaction.guild?.me?.permissions.toArray() as PermissionString[],
+              commandProps.permissions.bot
+            )}`
+          )
+        }
+      }
+
       commandProps.interaction(client, interaction)
 
       // Set it to the time when the cooldown expires
@@ -176,7 +188,7 @@ export async function handleSlashCommand(client: Client, interaction: Interactio
     if (commandProps.permissions?.member) {
       if (!checkPermissions(interaction.member as GuildMember, commandProps.permissions.member)) {
         throw new Error(
-          `You are missing permissions to perform this command. ${formatPermissionDiff(
+          `You are missing the following permissions to perform this command. \n${formatPermissionDiff(
             interaction.memberPermissions?.toArray() as PermissionString[],
             commandProps.permissions.member
           )}`
@@ -187,7 +199,7 @@ export async function handleSlashCommand(client: Client, interaction: Interactio
     if (commandProps.permissions?.bot) {
       if (!checkPermissions(interaction.guild?.me as GuildMember, commandProps.permissions.bot)) {
         throw new Error(
-          `I am missing permissions to perform this command. ${formatPermissionDiff(
+          `I am missing the following permissions to perform this command. \n${formatPermissionDiff(
             interaction.guild?.me?.permissions.toArray() as PermissionString[],
             commandProps.permissions.bot
           )}`
