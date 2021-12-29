@@ -2,7 +2,7 @@ import { SlashCommandBuilder } from '@discordjs/builders'
 import { MessageEmbed } from 'discord.js'
 
 import { defCommand } from '../../util/commands'
-import { addBalance, random } from '../../util/economy'
+import { addBalance, random, jackbuxEmoji } from '../../util/economy'
 
 export default defCommand({
   name: 'kiss',
@@ -21,15 +21,15 @@ export default defCommand({
     if (lotteryWin == 69) {
       addBalance(message.author.id, 2500)
       kissEmbed.setDescription(
-        `🤑 You just hit the jackpot and got \`⏣ 2500\` JACKBUX.\nGO BUY A LOTTERY TICKET!`
+        `🤑 You just hit the jackpot and got \`2500\` ${jackbuxEmoji} JACKBUX.\nGO BUY A LOTTERY TICKET!`
       )
       kissEmbed.setFooter('1 in 10,000 chance btw')
     } else {
       addBalance(message.author.id, reward)
-      kissEmbed.setDescription(`You just got \`⏣ ${reward}\` JACKBUX.`)
+      kissEmbed.setDescription(`You just got \`${reward}\` ${jackbuxEmoji} JACKBUX.`)
     }
 
-    message.channel.send({ embeds: [kissEmbed] })
+    message.reply({ embeds: [kissEmbed] })
   },
   interaction: async (client, interaction) => {
     return

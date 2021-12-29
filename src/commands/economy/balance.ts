@@ -1,7 +1,7 @@
 import { MessageEmbed, Client } from 'discord.js'
 import { defCommand } from '../../util/commands'
 import { SlashCommandBuilder } from '@discordjs/builders'
-import { getBalance } from '../../util/economy'
+import { getBalance, jackbuxEmoji } from '../../util/economy'
 
 export default defCommand({
   name: 'balance',
@@ -16,8 +16,8 @@ export default defCommand({
 
     const balanceEmbed = new MessageEmbed()
       .setColor('RANDOM')
-      .setTitle('Your Balance 💵')
-      .setDescription(`Wallet: \`⏣ ${balance}\``)
+      .setTitle(`Your Balance`)
+      .setDescription(`Wallet: \`${balance}\` ${jackbuxEmoji}`)
 
     if (balance < 10) {
       balanceEmbed.setFooter('Kinda poor')
@@ -29,7 +29,7 @@ export default defCommand({
       balanceEmbed.setFooter('🤑')
     }
 
-    message.channel.send({ embeds: [balanceEmbed] })
+    message.reply({ embeds: [balanceEmbed] })
   },
   interaction: async (client, interaction) => {
     return
