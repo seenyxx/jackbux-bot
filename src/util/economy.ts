@@ -1,7 +1,6 @@
 import db from 'quick.db'
 
 const economy = new db.table('economy')
-const files = new db.table('files')
 export const jackbuxEmoji = '<:dongbux:925549549660028979>'
 export const numberRegex = /^[0-9]+$/g
 
