@@ -3,7 +3,7 @@ import { MessageAttachment, MessageEmbed } from 'discord.js'
 
 import { defCommand } from '../../util/commands'
 import { getFileImagePath, getFilePath } from '../../util/files'
-import { getMarketItem, removeMarketItem } from '../../util/market'
+import { getMarketItem, removeMarketItem, remMarketUserItem } from '../../util/market'
 
 export default defCommand({
   name: 'market-remove',
@@ -31,6 +31,7 @@ export default defCommand({
     }
 
     removeMarketItem(id)
+    remMarketUserItem(message.author.id, id)
 
     message.reply('✅ Removed item.')
   },
