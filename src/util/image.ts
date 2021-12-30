@@ -9,8 +9,11 @@ export function watermarkImage(path: string, resultPath: string) {
     // Paste the actual image
     ctx.drawImage(image, 0, 0, image.width, image.height)
 
-    ctx.font = '800px sans-serif'
-    ctx.fillText('IMAGE PREVIEW', 0, 0)
+    ctx.font = '32px sans-serif'
+    ctx.fillStyle = '#FFFFFF'
+    // let textMeasure = ctx.measureText('IMAGE PREVIEW')
+
+    ctx.fillText('IMAGE PREVIEW', 10, 32)
 
     const buffer = canvas.toBuffer('image/png')
 

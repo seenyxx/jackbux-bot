@@ -1,9 +1,14 @@
+import { existsSync, readFile } from 'fs'
 import db from 'quick.db'
 
 const files = new db.table('files')
 
 export function setFilePath(name: string, path: string) {
   files.set(`${name}.path`, path)
+}
+
+export function deleteFile(name: string) {
+  files.delete(name)
 }
 
 export function setFileOwner(name: string, ownerId: string) {
@@ -31,4 +36,19 @@ export function fileExist(name: string) {
   let res = files.get(name)
 
   return res ? true : false
+}
+
+export function getFileImagePath(path: string) {
+  if (existsSync(`${path}.png`)) {
+    return `${path}.png`
+  }
+  if (existsSync(`${path}.jpg`)) {
+    return `${path}.jpg`
+  }
+  if (existsSync(`${path}.jpeg`)) {
+    return `${path}.jpeg`
+  }
+  if (existsSync(`${path}.webp`)) {
+    return `${path}.webp`
+  }
 }

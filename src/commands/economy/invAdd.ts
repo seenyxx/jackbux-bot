@@ -1,7 +1,7 @@
 import { SlashCommandBuilder } from '@discordjs/builders'
 
 import { defCommand } from '../../util/commands'
-import { getInventory } from '../../util/economy'
+import { getInventory, addInventoryItem } from '../../util/economy'
 import { MessageAttachment, MessageEmbed } from 'discord.js'
 import { download } from '../../util/network'
 import mime from 'mime-types'
@@ -64,6 +64,7 @@ export default defCommand({
     download(file.url, filePath, () => {
       setFilePath(name, filePath)
       setFileOwner(name, message.author.id)
+      addInventoryItem(authorId, name)
       watermarkImage(filePath, watermarkPath)
       message.channel.send(`Added as \`${fileName}\` ✅`)
     })
