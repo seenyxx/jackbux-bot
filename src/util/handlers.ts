@@ -366,7 +366,7 @@ export function helpMain() {
     )
 
   categoryMap.forEach((val, key) => {
-    let preview = `\`${val.slice(0, 3).join('` `')}\`...`
+    let preview = `\`${val.join('` `')}\``
 
     embed.addField(capitalizeFirstLetter(key), preview)
   })
