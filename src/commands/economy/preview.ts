@@ -10,7 +10,7 @@ export default defCommand({
   aliases: [],
   cooldown: 5,
   description: 'Preview an NFT',
-  usage: '',
+  usage: '<Name>',
   category: 'economy',
   commandPreference: 'message',
   run: async (client, message, args) => {

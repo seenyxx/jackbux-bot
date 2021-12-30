@@ -1,0 +1,43 @@
+import { SlashCommandBuilder } from '@discordjs/builders'
+import { MessageAttachment, MessageEmbed } from 'discord.js'
+
+import { defCommand } from '../../util/commands'
+import { getFileImagePath, getFilePath } from '../../util/files'
+import { getMarketItem, removeMarketItem } from '../../util/market'
+
+export default defCommand({
+  name: 'market-remove',
+  aliases: ['mr', 'market-rem'],
+  cooldown: 5,
+  description: 'Remove an item that you posted on the marketplace',
+  usage: '<ID>',
+  category: 'economy',
+  commandPreference: 'message',
+  run: async (client, message, args) => {
+    let id = args[0]
+
+    if (!id) {
+      throw new Error('You must provide an ID!')
+    }
+
+    let item = getMarketItem(id)
+
+    if (!item) {
+      throw new Error('That item does not exist!')
+    }
+
+    if (message.author.id !== item.seller.id) {
+      throw new Error('You did not put this item up on the marketplace!')
+    }
+
+    removeMarketItem(id)
+
+    message.reply('✅ Removed item.')
+  },
+  interaction: async (client, interaction) => {
+    return
+  },
+  slashCommand: new SlashCommandBuilder()
+    .setName('market-remove')
+    .setDescription('Remove an item that you posted on the marketplace'),
+})

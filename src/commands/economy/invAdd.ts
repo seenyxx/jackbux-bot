@@ -5,8 +5,9 @@ import { getInventory, addInventoryItem } from '../../util/economy'
 import { MessageAttachment, MessageEmbed } from 'discord.js'
 import { download } from '../../util/network'
 import mime from 'mime-types'
-import { fileExist, setFileOwner, setFilePath } from '../../util/files'
+import { fileExist, setFileOwner, setFilePath, fileRegex } from '../../util/files'
 import { watermarkImage } from '../../util/image'
+import { sleep } from '../../util/events'
 let allowedIds = ['470782419868319744', '460390245351817227', '796715626697588786']
 
 export default defCommand({
@@ -39,6 +40,10 @@ export default defCommand({
       throw new Error('The name must be at least 4 characters!')
     }
 
+    if (name.length > 20) {
+      throw new Error('The name cannot be longer than 20 characters!')
+    }
+
     let allowed = allowedIds.includes(authorId)
 
     if (!allowed) {
@@ -47,6 +52,10 @@ export default defCommand({
 
     if (name.startsWith('_')) {
       throw new Error('Name cannot start with `_`!')
+    }
+
+    if (!name.match(fileRegex)) {
+      throw new Error('Name can only contain alphanumeric characters, `_`, `.` or ` `!')
     }
 
     if (

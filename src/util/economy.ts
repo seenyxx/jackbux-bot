@@ -20,7 +20,7 @@ export function setBalance(userId: string, amount: number) {
 export function getBalance(userId: string): number {
   let bal = economy.get(`${userId}.wallet`)
 
-  if (typeof bal == 'undefined') {
+  if (typeof bal == 'undefined' || typeof bal == 'object') {
     setBalance(userId, 50)
     return 50
   } else {

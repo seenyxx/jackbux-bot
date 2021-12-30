@@ -2,6 +2,7 @@ import { existsSync, readFile } from 'fs'
 import db from 'quick.db'
 
 const files = new db.table('files')
+export const fileRegex = /^[A-Za-z0-9_. ]+$/g
 
 export function setFilePath(name: string, path: string) {
   files.set(`${name}.path`, path)

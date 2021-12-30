@@ -4,13 +4,14 @@ import { existsSync, unlinkSync } from 'fs'
 
 import { defCommand } from '../../util/commands'
 import { getFileImagePath, getFileOwner, deleteFile } from '../../util/files'
+import { remInventoryItem } from '../../util/economy'
 
 export default defCommand({
   name: 'disown',
   aliases: ['inv-rem', 'inv-remove', 'inventory-remove', 'destroy', 'remove'],
   cooldown: 5,
   description: 'Disown an NFT that you own',
-  usage: '',
+  usage: '<Name>',
   category: 'economy',
   commandPreference: 'message',
   run: async (client, message, args) => {
@@ -68,6 +69,7 @@ export default defCommand({
         if (reaction) {
           message.reply('You have disowned your NFT!')
           deleteFile(name)
+          remInventoryItem(message.author.id, name)
           unlinkSync(originalPath as string)
           unlinkSync(previewPath)
         }
