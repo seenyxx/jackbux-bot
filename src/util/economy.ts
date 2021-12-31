@@ -17,6 +17,22 @@ export function setBalance(userId: string, amount: number) {
   economy.set(`${userId}.wallet`, amount)
 }
 
+export function setBankBalance(userId: string, amount: number) {
+  economy.set(`${userId}.bank`, amount)
+}
+
+export function addBankBalance(userId: string, added: number) {
+  economy.add(`${userId}.bank`, added)
+}
+
+export function subtractBankBalance(userId: string, subtracted: number) {
+  economy.subtract(`${userId}.bank`, subtracted)
+}
+
+export function getBankBalance(userId: string): number {
+  return economy.get(`${userId}.bank`) || 0
+}
+
 export function getBalance(userId: string): number {
   let bal = economy.get(`${userId}.wallet`)
 
@@ -26,6 +42,18 @@ export function getBalance(userId: string): number {
   } else {
     return bal
   }
+}
+
+export function getBankMax(userId: string): number {
+  return economy.get(`${userId}.bankmax`) || 1000
+}
+
+export function addBankMax(userId: string, added: number) {
+  setBankMax(userId, getBankMax(userId) + added) 
+}
+
+export function setBankMax(userId: string, amount: number) {
+  economy.set(`${userId}.bankmax`, amount)
 }
 
 export function random(min: number, max: number) {

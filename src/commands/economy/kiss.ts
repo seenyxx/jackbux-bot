@@ -13,7 +13,7 @@ export default defCommand({
   category: 'economy',
   commandPreference: 'message',
   run: async (client, message) => {
-    let reward = random(20, 30)
+    let reward = random(50, 120)
     let lotteryWin = random(1, 10000)
 
     const kissEmbed = new MessageEmbed().setColor('RANDOM').setTitle('😘 Mwah!')
