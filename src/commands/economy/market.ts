@@ -5,8 +5,8 @@ import { defCommand } from '../../util/commands'
 import { formatMarket, getMarket } from '../../util/market'
 
 export default defCommand({
-  name: 'market',
-  aliases: ['shop', 'm'],
+  name: 'nft-market',
+  aliases: ['nft-shop', 'nm', 'nshop', 'nmarket'],
   cooldown: 10,
   description: 'Views the NFTs up for sale',
   usage: '',

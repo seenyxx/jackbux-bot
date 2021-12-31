@@ -7,8 +7,8 @@ import { getFileOwner } from '../../util/files'
 import { setMarketItem } from '../../util/market'
 
 export default defCommand({
-  name: 'market-sell',
-  aliases: ['sell'],
+  name: 'nft-market-sell',
+  aliases: ['nft-sell', 'nsell', 'n-sell'],
   cooldown: 10,
   description: 'Put your NFT up for sale!',
   usage: '<Price> <Name>',

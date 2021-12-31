@@ -15,7 +15,7 @@ import {
 
 export default defCommand({
   name: 'my-market',
-  aliases: ['my-shop-listings', 'mm', 'my-market-listings'],
+  aliases: ['my-shop-listings', 'mm', 'my-market-listings', 'my-nft-market'],
   cooldown: 10,
   description: 'Views the items that you put up for sale',
   usage: '',

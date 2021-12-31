@@ -6,8 +6,8 @@ import { getFileImagePath, getFilePath } from '../../util/files'
 import { getMarketItem } from '../../util/market'
 
 export default defCommand({
-  name: 'market-view',
-  aliases: ['mv', 'view-market'],
+  name: 'nft-market-view',
+  aliases: ['nmv', 'nft-view-market'],
   cooldown: 5,
   description: 'View an item on the market',
   usage: '<ID>',

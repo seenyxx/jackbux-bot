@@ -6,8 +6,8 @@ import { getFileImagePath, getFilePath } from '../../util/files'
 import { getMarketItem, removeMarketItem, remMarketUserItem } from '../../util/market'
 
 export default defCommand({
-  name: 'market-remove',
-  aliases: ['mr', 'market-rem'],
+  name: 'nft-market-remove',
+  aliases: ['nft-mr', 'nft-market-rem', 'nmr'],
   cooldown: 5,
   description: 'Remove an item that you posted on the marketplace',
   usage: '<ID>',
