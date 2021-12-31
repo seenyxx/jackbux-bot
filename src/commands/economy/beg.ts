@@ -35,7 +35,5 @@ export default defCommand({
   interaction: async (client, interaction) => {
     return
   },
-  slashCommand: new SlashCommandBuilder()
-    .setName('beg')
-    .setDescription('Beg for money'),
+  slashCommand: new SlashCommandBuilder().setName('beg').setDescription('Beg for money'),
 })

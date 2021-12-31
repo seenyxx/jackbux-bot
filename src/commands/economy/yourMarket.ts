@@ -22,18 +22,20 @@ export default defCommand({
   category: 'economy',
   commandPreference: 'message',
   run: async (client, message, args) => {
-    let userMarket = getMarketUser(message.author.id).map((itemId) => {
-      let item = getMarketItem(itemId)
+    let userMarket = getMarketUser(message.author.id)
+      .map((itemId) => {
+        let item = getMarketItem(itemId)
 
-      if (!item) {
-        return
-      }
+        if (!item) {
+          return
+        }
 
-      return {
-        ID: itemId,
-        data: getMarketItem(itemId),
-      }
-    }).filter(m => m) as Array<{ ID: string, data: MarketItem }>
+        return {
+          ID: itemId,
+          data: getMarketItem(itemId),
+        }
+      })
+      .filter((m) => m) as Array<{ ID: string; data: MarketItem }>
 
     const embed = new MessageEmbed()
       .setColor('RANDOM')

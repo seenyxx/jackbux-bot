@@ -59,6 +59,10 @@ export default defCommand({
 
       let intAmount = parseInt(amount)
 
+      if (userBalance < intAmount) {
+        throw new Error('You do not have enough JACKBUX!')
+      }
+
       subtractBalance(message.author.id, intAmount)
       addBalance(mentionedUser.id, intAmount)
       message.reply({ embeds: [giveCurrencyEmbed(message.author, intAmount, mentionedUser)] })

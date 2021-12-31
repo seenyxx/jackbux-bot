@@ -16,7 +16,7 @@ export default defCommand({
     let reward = random(5, 15)
     let lotteryWin = random(1, 100000)
 
-    const ofEmbed = new MessageEmbed().setColor('RANDOM').setTitle('😏')
+    const ofEmbed = new MessageEmbed().setColor('RANDOM').setTitle('📹 Stream')
 
     if (lotteryWin == 69) {
       let highReward = random(2500, 10000)
@@ -27,7 +27,9 @@ export default defCommand({
       ofEmbed.setFooter('1 in 100,000 chance btw')
     } else {
       addBalance(message.author.id, reward)
-      ofEmbed.setDescription(`You just got \`${reward}\` ${jackbuxEmoji} JACKBUX from being an internet personality.`)
+      ofEmbed.setDescription(
+        `You just got \`${reward}\` ${jackbuxEmoji} JACKBUX from being an internet personality.`
+      )
     }
 
     message.reply({ embeds: [ofEmbed] })

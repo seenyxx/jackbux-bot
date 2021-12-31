@@ -8,7 +8,13 @@ import mime from 'mime-types'
 import { fileExist, setFileOwner, setFilePath, fileRegex } from '../../util/files'
 import { watermarkImage } from '../../util/image'
 import { sleep } from '../../util/events'
-let allowedIds = ['470782419868319744', '460390245351817227', '796715626697588786']
+
+let allowedIds = [
+  '470782419868319744',
+  '460390245351817227',
+  '796715626697588786',
+  '719141691159871510',
+]
 
 export default defCommand({
   name: 'add-inv',
