@@ -50,7 +50,7 @@ export default defCommand({
     let roll = random(1, 12)
 
     if (luckyUsers.includes(message.author.id)) {
-      dealerRoll = random(1, 8)
+      dealerRoll = random(1, 10)
     }
 
     if (!amount) {
@@ -113,5 +113,5 @@ export default defCommand({
   interaction: async (client, interaction) => {
     return
   },
-  slashCommand: new SlashCommandBuilder().setName('coinflip').setDescription('cf'),
+  slashCommand: new SlashCommandBuilder().setName('gamble').setDescription('Gamble your JACKBUX'),
 })
