@@ -56,6 +56,7 @@ export default defCommand({
       .setColor('RANDOM')
       .setTitle(`🏅 Richest people in **${message.guild?.name}** ${jackbuxEmoji}`)
       .setDescription(userBalanceText)
+      .setFooter('This only accounts for the amount of money in their wallet')
 
     message.reply({ embeds: [embed] })
   },
