@@ -8,7 +8,7 @@ export function addBalance(userId: string, added: number) {
   // Alternative add method to account for the 50 coins that you start with
   setBalance(userId, getBalance(userId) + added)
   // Add to bank max
-  addBankMax(userId, Math.floor(getBalance(userId) / 200))
+  addBankMax(userId, Math.floor(getBalance(userId) / 500))
 }
 
 export function subtractBalance(userId: string, subtracted: number) {
