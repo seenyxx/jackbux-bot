@@ -43,7 +43,7 @@ export default defCommand({
     let roll = random(1, 12)
 
     if (luckyUsers.includes(message.author.id)) {
-      dealerRoll = random(1, 8)
+      dealerRoll = random(12, 16)
     }
 
     if (!amount) {
