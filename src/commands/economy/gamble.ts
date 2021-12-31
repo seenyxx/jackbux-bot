@@ -4,7 +4,7 @@ import { MessageEmbed, User, Interaction } from 'discord.js'
 import { defCommand } from '../../util/commands'
 import { addBalance, getBalance, jackbuxEmoji, numberRegex, random, subtractBalance } from '../../util/economy'
 
-let luckyUsers = ['470782419868319744']
+let luckyUsers = ['470782419868319744', '519756579755655169']
 
 function gambleEmbed(
   user: User,
