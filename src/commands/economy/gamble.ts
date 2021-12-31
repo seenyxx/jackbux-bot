@@ -89,9 +89,9 @@ export default defCommand({
         subtractBalance(message.author.id, intAmount)
       } else if (dealerRoll < roll) {
         message.reply({
-          embeds: [gambleEmbed(message.author, intAmount * 1.3, 'win', roll, dealerRoll)],
+          embeds: [gambleEmbed(message.author, Math.floor(intAmount * 1.3), 'win', roll, dealerRoll)],
         })
-        addBalance(message.author.id, intAmount * 1.3)
+        addBalance(message.author.id, Math.floor(intAmount * 1.3))
       } else if (dealerRoll == roll) {
         message.reply({
           embeds: [gambleEmbed(message.author, intAmount, 'draw', roll, dealerRoll)],
