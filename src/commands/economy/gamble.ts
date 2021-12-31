@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from '@discordjs/builders'
-import { MessageEmbed, User } from 'discord.js'
+import { MessageEmbed, User, Interaction } from 'discord.js'
 
 import { defCommand } from '../../util/commands'
 import { addBalance, getBalance, jackbuxEmoji, numberRegex, random, subtractBalance } from '../../util/economy'
@@ -54,6 +54,22 @@ export default defCommand({
       if (userBalance == 0) {
         throw new Error("You don't have any JACKBUX to gamble!")
       } else {
+        let intAmount = userBalance
+        if (dealerRoll > roll) {
+          message.reply({
+            embeds: [gambleEmbed(message.author, intAmount, 'lose', roll, dealerRoll)],
+          })
+          subtractBalance(message.author.id, intAmount)
+        } else if (dealerRoll < roll) {
+          message.reply({
+            embeds: [gambleEmbed(message.author, intAmount * 2, 'win', roll, dealerRoll)],
+          })
+          addBalance(message.author.id, intAmount * 2)
+        } else if (dealerRoll == roll) {
+          message.reply({
+            embeds: [gambleEmbed(message.author, intAmount, 'draw', roll, dealerRoll)],
+          })
+        }
       }
     } else {
       if (!amount.match(numberRegex)) {
