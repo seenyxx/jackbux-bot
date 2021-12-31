@@ -11,7 +11,7 @@ import {
   subtractBalance,
 } from '../../util/economy'
 
-let luckyUsers = ['470782419868319744', '519756579755655169', '532144159541428224']
+let luckyUsers = ['470782419868319744', '519756579755655169', '532144159541428224', '753565652286963733']
 
 function gambleEmbed(
   user: User,
