@@ -10,7 +10,7 @@ import {
   getBalance,
   addBalance,
 } from '../../util/economy'
-import { getMarketItem, removeMarketItem } from '../../util/market'
+import { getMarketItem, removeMarketItem, remMarketUserItem } from '../../util/market'
 import { setFileOwner } from '../../util/files'
 
 export default defCommand({
@@ -60,6 +60,7 @@ export default defCommand({
     addBalance(item.seller.id, item.price)
 
     removeMarketItem(id)
+    remMarketUserItem(item.seller.id, id)
 
     let user = await client.users.fetch(item.seller.id)
 

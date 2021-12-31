@@ -75,7 +75,7 @@ export function removeMarketItem(name: string) {
 export function formatMarket(
   marketData: {
     ID: string
-    data: any
+    data: MarketItem
   }[]
 ) {
   return marketData.map((marketItem) => {

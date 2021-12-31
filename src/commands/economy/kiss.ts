@@ -6,14 +6,14 @@ import { addBalance, random, jackbuxEmoji } from '../../util/economy'
 
 export default defCommand({
   name: 'kiss',
-  aliases: ['kiss'],
+  aliases: [],
   cooldown: 18 * 60 * 60,
   description: 'Give a kiss for 5 JACKBUX',
   usage: '',
   category: 'economy',
   commandPreference: 'message',
   run: async (client, message) => {
-    let reward = random(2, 10)
+    let reward = random(20, 30)
     let lotteryWin = random(1, 10000)
 
     const kissEmbed = new MessageEmbed().setColor('RANDOM').setTitle('😘 Mwah!')

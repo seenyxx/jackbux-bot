@@ -4,6 +4,7 @@ import { MessageEmbed } from 'discord.js'
 import { defCommand } from '../../util/commands'
 import { addBalance, random, jackbuxEmoji, numberRegex } from '../../util/economy'
 import { getFileOwner } from '../../util/files'
+import { MarketItem } from '../../util/market'
 import {
   setMarketItem,
   getMarket,
@@ -22,11 +23,17 @@ export default defCommand({
   commandPreference: 'message',
   run: async (client, message, args) => {
     let userMarket = getMarketUser(message.author.id).map((itemId) => {
+      let item = getMarketItem(itemId)
+
+      if (!item) {
+        return
+      }
+
       return {
         ID: itemId,
         data: getMarketItem(itemId),
       }
-    })
+    }).filter(m => m) as Array<{ ID: string, data: MarketItem }>
 
     const embed = new MessageEmbed()
       .setColor('RANDOM')
