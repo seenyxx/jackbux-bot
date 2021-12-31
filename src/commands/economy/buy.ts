@@ -15,7 +15,7 @@ import { setFileOwner } from '../../util/files'
 
 export default defCommand({
   name: 'market-buy',
-  aliases: ['mb', 'buy'],
+  aliases: ['mb', 'mbuy', 'nbuy'],
   cooldown: 5,
   description: 'Buys an item on the market',
   usage: '<ID>',

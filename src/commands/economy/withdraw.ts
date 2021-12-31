@@ -16,7 +16,7 @@ function withdrawEmbed(amount: number,) {
 export default defCommand({
   name: 'withdraw',
   aliases: ['with'],
-  cooldown: 5,
+  cooldown: 3,
   description: 'Withdraw your JACKBUX',
   usage: '<Amount>',
   category: 'economy',

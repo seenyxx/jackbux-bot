@@ -16,7 +16,7 @@ function depositEmbed(amount: number,) {
 export default defCommand({
   name: 'deposit',
   aliases: ['dep'],
-  cooldown: 5,
+  cooldown: 3,
   description: 'Deposit your JACKBUX',
   usage: '<Amount>',
   category: 'economy',
@@ -74,5 +74,5 @@ export default defCommand({
   interaction: async (client, interaction) => {
     return
   },
-  slashCommand: new SlashCommandBuilder().setName('withdraw').setDescription('Withdraw your JACKBUX!'),
+  slashCommand: new SlashCommandBuilder().setName('deposit').setDescription('Deposit your JACKBUX!'),
 })
