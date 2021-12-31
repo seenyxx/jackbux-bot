@@ -17,7 +17,11 @@ export default defCommand({
     const balanceEmbed = new MessageEmbed()
       .setColor('RANDOM')
       .setTitle(`Your Balance`)
-      .setDescription(`**Wallet:** \`${balance}\` ${jackbuxEmoji}\n**Bank:** \`${getBankBalance(message.author.id)} / ${getBankMax(message.author.id)}\``)
+      .setDescription(
+        `**Wallet:** \`${balance}\` ${jackbuxEmoji}\n**Bank:** \`${getBankBalance(
+          message.author.id
+        )} / ${getBankMax(message.author.id)}\``
+      )
 
     if (balance < 10) {
       balanceEmbed.setFooter('Kinda poor')

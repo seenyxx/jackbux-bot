@@ -49,7 +49,7 @@ export function getBankMax(userId: string): number {
 }
 
 export function addBankMax(userId: string, added: number) {
-  setBankMax(userId, getBankMax(userId) + added) 
+  setBankMax(userId, getBankMax(userId) + added)
 }
 
 export function setBankMax(userId: string, amount: number) {

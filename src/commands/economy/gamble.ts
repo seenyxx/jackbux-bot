@@ -2,9 +2,16 @@ import { SlashCommandBuilder } from '@discordjs/builders'
 import { MessageEmbed, User, Interaction } from 'discord.js'
 
 import { defCommand } from '../../util/commands'
-import { addBalance, getBalance, jackbuxEmoji, numberRegex, random, subtractBalance } from '../../util/economy'
+import {
+  addBalance,
+  getBalance,
+  jackbuxEmoji,
+  numberRegex,
+  random,
+  subtractBalance,
+} from '../../util/economy'
 
-let luckyUsers = ['470782419868319744', '519756579755655169']
+let luckyUsers = ['470782419868319744', '519756579755655169', '532144159541428224']
 
 function gambleEmbed(
   user: User,
@@ -62,7 +69,9 @@ export default defCommand({
           subtractBalance(message.author.id, intAmount)
         } else if (dealerRoll < roll) {
           message.reply({
-            embeds: [gambleEmbed(message.author, Math.floor(intAmount * 1.3), 'win', roll, dealerRoll)],
+            embeds: [
+              gambleEmbed(message.author, Math.floor(intAmount * 1.3), 'win', roll, dealerRoll),
+            ],
           })
           addBalance(message.author.id, Math.floor(intAmount * 1.3))
         } else if (dealerRoll == roll) {
@@ -89,9 +98,11 @@ export default defCommand({
         subtractBalance(message.author.id, intAmount)
       } else if (dealerRoll < roll) {
         message.reply({
-          embeds: [gambleEmbed(message.author, Math.floor(intAmount * 1.3), 'win', roll, dealerRoll)],
+          embeds: [
+            gambleEmbed(message.author, Math.floor(intAmount * 0.8), 'win', roll, dealerRoll),
+          ],
         })
-        addBalance(message.author.id, Math.floor(intAmount * 1.3))
+        addBalance(message.author.id, Math.floor(intAmount * 0.8))
       } else if (dealerRoll == roll) {
         message.reply({
           embeds: [gambleEmbed(message.author, intAmount, 'draw', roll, dealerRoll)],
