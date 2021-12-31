@@ -8,7 +8,7 @@ import { setMarketItem } from '../../util/market'
 
 export default defCommand({
   name: 'nft-market-sell',
-  aliases: ['nft-sell', 'nsell', 'n-sell'],
+  aliases: ['nft-sell', 'nsell', 'n-sell', 'market-sell'],
   cooldown: 10,
   description: 'Put your NFT up for sale!',
   usage: '<Price> <Name>',
