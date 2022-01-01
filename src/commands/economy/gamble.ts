@@ -35,6 +35,8 @@ function gambleEmbed(
   return embed
 }
 
+const gambleLimit = 100000
+
 export default defCommand({
   name: 'gamble',
   aliases: [],
@@ -61,7 +63,7 @@ export default defCommand({
       if (userBalance == 0) {
         throw new Error("You don't have any JACKBUX to gamble!")
       } else {
-        let intAmount = userBalance
+        let intAmount = userBalance > gambleLimit ? gambleLimit : userBalance
         if (dealerRoll > roll) {
           message.reply({
             embeds: [gambleEmbed(message.author, intAmount, 'lose', roll, dealerRoll)],
@@ -86,6 +88,10 @@ export default defCommand({
       }
 
       let intAmount = parseInt(amount)
+
+      if (intAmount > gambleLimit) {
+        throw new Error(`You cannot gamble more than \`${gambleLimit}\``)
+      }
 
       if (userBalance < intAmount) {
         throw new Error('You do not have enough JACKBUX!')
