@@ -38,8 +38,8 @@ export default defCommand({
       throw new Error('Your target must at least have 300 JACKBUX!')
     }
 
-    let stealSuccess = random(1, 4)
-    let stolenAmount = random(Math.floor(targetBal / 6), Math.floor(targetBal / 1.5))
+    let stealSuccess = random(1, 6)
+    let stolenAmount = random(Math.floor(targetBal / 8), Math.floor(targetBal / 2))
     let lostAmount = random(Math.floor(userBal / 6), Math.floor(userBal / 2))
 
     if (stealSuccess == 1) {
