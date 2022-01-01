@@ -19,12 +19,16 @@ export default defCommand({
     let streak = incrementDailyStreak(message.author.id)
     let jackpot = 2500
 
-    const kissEmbed = new MessageEmbed().setColor('RANDOM').setTitle(`😘 Mwah! (${streak} day streak)`)
+    const kissEmbed = new MessageEmbed()
+      .setColor('RANDOM')
+      .setTitle(`😘 Mwah! (${streak} day streak)`)
 
     if (lotteryWin == 69) {
       addBalance(message.author.id, jackpot)
       kissEmbed.setDescription(
-        `🤑 You just hit the jackpot and got \`${jackpot + streak * 500}\` ${jackbuxEmoji} JACKBUX.\nGO BUY A LOTTERY TICKET!`
+        `🤑 You just hit the jackpot and got \`${
+          jackpot + streak * 500
+        }\` ${jackbuxEmoji} JACKBUX.\nGO BUY A LOTTERY TICKET!`
       )
       kissEmbed.setFooter('1 in 10,000 chance btw')
     } else {

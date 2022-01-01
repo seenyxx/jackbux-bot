@@ -2,9 +2,18 @@ import { SlashCommandBuilder } from '@discordjs/builders'
 import { MessageEmbed } from 'discord.js'
 
 import { defCommand } from '../../util/commands'
-import { addBankBalance, getBalance, jackbuxEmoji, numberRegex, subtractBalance, getBankMax, getBankBalance, remInventoryItem } from '../../util/economy'
+import {
+  addBankBalance,
+  getBalance,
+  jackbuxEmoji,
+  numberRegex,
+  subtractBalance,
+  getBankMax,
+  getBankBalance,
+  remInventoryItem,
+} from '../../util/economy'
 
-function depositEmbed(amount: number,) {
+function depositEmbed(amount: number) {
   const embed = new MessageEmbed()
     .setColor('GREEN')
     .setTitle(`Deposit`)
@@ -38,7 +47,7 @@ export default defCommand({
         let intAmount = userBalance
 
         let remainingAmount = userBankMax - userBankBal
-        
+
         if (intAmount > remainingAmount) {
           intAmount = remainingAmount
         }
@@ -74,5 +83,7 @@ export default defCommand({
   interaction: async (client, interaction) => {
     return
   },
-  slashCommand: new SlashCommandBuilder().setName('deposit').setDescription('Deposit your JACKBUX!'),
+  slashCommand: new SlashCommandBuilder()
+    .setName('deposit')
+    .setDescription('Deposit your JACKBUX!'),
 })

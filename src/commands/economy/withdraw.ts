@@ -2,9 +2,16 @@ import { SlashCommandBuilder } from '@discordjs/builders'
 import { MessageEmbed, User } from 'discord.js'
 
 import { defCommand } from '../../util/commands'
-import { addBalance, getBankBalance, jackbuxEmoji, numberRegex, subtractBankBalance, addBalanceNeutral } from '../../util/economy'
+import {
+  addBalance,
+  getBankBalance,
+  jackbuxEmoji,
+  numberRegex,
+  subtractBankBalance,
+  addBalanceNeutral,
+} from '../../util/economy'
 
-function withdrawEmbed(amount: number,) {
+function withdrawEmbed(amount: number) {
   const embed = new MessageEmbed()
     .setColor('GREEN')
     .setTitle(`Withdraw`)
@@ -60,5 +67,7 @@ export default defCommand({
   interaction: async (client, interaction) => {
     return
   },
-  slashCommand: new SlashCommandBuilder().setName('withdraw').setDescription('Withdraw your JACKBUX!'),
+  slashCommand: new SlashCommandBuilder()
+    .setName('withdraw')
+    .setDescription('Withdraw your JACKBUX!'),
 })

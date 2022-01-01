@@ -8,7 +8,7 @@ export default defCommand({
   aliases: [],
   cooldown: 60,
   description: 'Give someone else your JACKBUX',
-  usage: '<@User> <Amount>',
+  usage: '',
   category: 'economy',
   commandPreference: 'message',
   run: async (client, message, args) => {
@@ -18,7 +18,5 @@ export default defCommand({
   interaction: async (client, interaction) => {
     return
   },
-  slashCommand: new SlashCommandBuilder()
-    .setName('test')
-    .setDescription('test'),
+  slashCommand: new SlashCommandBuilder().setName('test').setDescription('test'),
 })

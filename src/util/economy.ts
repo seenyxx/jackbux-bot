@@ -1,4 +1,4 @@
-import { randomBytes } from 'crypto';
+import { randomBytes } from 'crypto'
 import db from 'quick.db'
 
 const economy = new db.table('economy')

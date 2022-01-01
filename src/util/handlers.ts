@@ -83,9 +83,10 @@ export async function handleMessageCommand(client: Client, message: Message) {
       commandProps
         .run(client, message, args)
         // Set it to the time when the cooldown expires
-        .then(() => db.set(cooldownKey, Date.now() + (commandProps as CommandProps).cooldown * 1000))
+        .then(() =>
+          db.set(cooldownKey, Date.now() + (commandProps as CommandProps).cooldown * 1000)
+        )
         .catch((e) => message.reply({ embeds: [commandError(e)] }))
-
     } else if (currentTimestamp <= cooldownTimestamp) {
       let timeRemaining = cooldownTimestamp - currentTimestamp
 

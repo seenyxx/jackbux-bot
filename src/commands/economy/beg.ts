@@ -28,7 +28,9 @@ export default defCommand({
       ofEmbed.setFooter('1 in 100,000 chance btw')
     } else {
       addBalance(message.author.id, win == 1 ? 0 : reward)
-      ofEmbed.setDescription(`You just got \`${win == 1 ? 0 : reward}\` ${jackbuxEmoji} JACKBUX from begging.`)
+      ofEmbed.setDescription(
+        `You just got \`${win == 1 ? 0 : reward}\` ${jackbuxEmoji} JACKBUX from begging.`
+      )
     }
 
     message.reply({ embeds: [ofEmbed] })

@@ -1,4 +1,4 @@
-import { readFileSync } from 'fs';
+import { readFileSync } from 'fs'
 import { MessageEmbed } from 'discord.js'
 import db from 'quick.db'
 
@@ -12,7 +12,7 @@ interface ShopData {
 }
 
 export function shopEmbed() {
-  let shopDesc = shopData.map(item => `**${item.name}**\n${item.desc}`).join('\n')
+  let shopDesc = shopData.map((item) => `**${item.name}**\n${item.desc}`).join('\n')
 
   const embed = new MessageEmbed()
     .setColor('RANDOM')
