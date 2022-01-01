@@ -40,7 +40,7 @@ export default defCommand({
 
     let stealSuccess = random(1, 6)
     let stolenAmount = random(Math.floor(targetBal / 8), Math.floor(targetBal / 2))
-    let lostAmount = random(Math.floor(userBal / 6), Math.floor(userBal / 2))
+    let lostAmount = random(Math.floor(userBal / 2), Math.floor(userBal))
 
     if (stealSuccess == 1) {
       const embed = new MessageEmbed()
