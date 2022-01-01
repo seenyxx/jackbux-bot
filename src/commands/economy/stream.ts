@@ -13,7 +13,7 @@ export default defCommand({
   category: 'economy',
   commandPreference: 'message',
   run: async (client, message) => {
-    let reward = random(50, 100)
+    let reward = random(300, 1000)
     let lotteryWin = random(1, 100000)
 
     const ofEmbed = new MessageEmbed().setColor('RANDOM').setTitle('📹 Stream')

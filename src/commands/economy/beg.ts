@@ -13,7 +13,8 @@ export default defCommand({
   category: 'economy',
   commandPreference: 'message',
   run: async (client, message) => {
-    let reward = random(3, 10)
+    let reward = random(200, 500)
+    let win = random(1, 3)
     let lotteryWin = random(1, 100000)
 
     const ofEmbed = new MessageEmbed().setColor('RANDOM').setTitle('Beg')
@@ -26,8 +27,8 @@ export default defCommand({
       )
       ofEmbed.setFooter('1 in 100,000 chance btw')
     } else {
-      addBalance(message.author.id, reward)
-      ofEmbed.setDescription(`You just got \`${reward}\` ${jackbuxEmoji} JACKBUX from begging.`)
+      addBalance(message.author.id, win == 1 ? 0 : reward)
+      ofEmbed.setDescription(`You just got \`${win == 1 ? 0 : reward}\` ${jackbuxEmoji} JACKBUX from begging.`)
     }
 
     message.reply({ embeds: [ofEmbed] })
