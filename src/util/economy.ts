@@ -35,6 +35,7 @@ export function incrementDailyStreak(userId: string) {
     setNextDailyTimestamp(userId, now + dailyStreakAllowedTime)
   } else {
     setDailyStreak(userId, 0)
+
     setNextDailyTimestamp(userId, now + dailyStreakAllowedTime)
   }
 
@@ -77,7 +78,7 @@ export function getBalance(userId: string): number {
 }
 
 export function getBankMax(userId: string): number {
-  return economy.get(`${userId}.bankmax`) || 1000
+  return economy.get(`${userId}.bankmax`) || 10000
 }
 
 export function addBankMax(userId: string, added: number) {
