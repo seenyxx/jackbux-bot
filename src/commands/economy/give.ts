@@ -70,7 +70,7 @@ export default defCommand({
       subtractBalance(message.author.id, intAmount)
       addBalanceNeutral(mentionedUser.id, intAmount)
       mentionedUser
-        .send(`${message.author.tag} just gave you \`${intAmount}\` ${jackbuxEmoji}`)
+        .send(`**${message.author.tag}** just gave you \`${intAmount}\` ${jackbuxEmoji}`)
         .catch(() => {})
       message.reply({ embeds: [giveCurrencyEmbed(message.author, intAmount, mentionedUser)] })
     }

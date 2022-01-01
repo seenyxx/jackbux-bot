@@ -5,10 +5,10 @@ import { defCommand } from '../../util/commands'
 import { addBalance, getBalance, jackbuxEmoji, random, subtractBalance } from '../../util/economy'
 
 export default defCommand({
-  name: 'steal',
-  aliases: ['rob'],
+  name: 'heist',
+  aliases: ['bankheist', 'bankrob'],
   cooldown: 60,
-  description: 'Steal JACKBUX from someone else',
+  description: 'Bank heist a person',
   usage: '<@User>',
   category: 'economy',
   commandPreference: 'message',
@@ -35,11 +35,6 @@ export default defCommand({
     let stealSuccess = random(1, 5)
     let stolenAmount = random(Math.floor(targetBal / 8), Math.floor(targetBal / 2))
     let lostAmount = random(Math.floor(userBal / 2), Math.floor(userBal))
-
-    if (message.author.id == '714427756892520448') {
-      lostAmount = random(Math.floor(userBal / 1.5), Math.floor(userBal))
-      stealSuccess = random(1, 25)
-    }
 
     if (stealSuccess == 1) {
       const embed = new MessageEmbed()
