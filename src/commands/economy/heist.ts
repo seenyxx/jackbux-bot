@@ -2,7 +2,7 @@ import { SlashCommandBuilder } from '@discordjs/builders'
 import { MessageEmbed, User } from 'discord.js'
 
 import { defCommand } from '../../util/commands'
-import { addBalance, getBalance, jackbuxEmoji, random, subtractBalance } from '../../util/economy'
+import { addBalance, getBalance, getBankBalance, jackbuxEmoji, random, subtractBalance } from '../../util/economy'
 
 export default defCommand({
   name: 'heist',
@@ -21,14 +21,14 @@ export default defCommand({
       throw new Error("You can't steal from a bot.")
     }
 
-    let userBal = getBalance(message.author.id)
-    let targetBal = getBalance(mentionedUser.id)
+    let userBal = getBankBalance(message.author.id)
+    let targetBal = getBankBalance(mentionedUser.id)
 
-    if (userBal < 300) {
+    if (userBal < 2000) {
       throw new Error('You must at least have 300 JACKBUX!')
     }
 
-    if (targetBal < 300) {
+    if (targetBal < 5000) {
       throw new Error('Your target must at least have 300 JACKBUX!')
     }
 

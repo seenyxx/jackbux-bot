@@ -1,7 +1,7 @@
 import { SlashCommandBuilder } from '@discordjs/builders'
 
 import { defCommand } from '../../util/commands'
-import { addBalanceNeutral, getBalance, getBankBalance } from '../../util/economy'
+import { addBalanceNeutral, getBalance, getBankBalance, addBankMax } from '../../util/economy'
 
 export default defCommand({
   name: 'begd',
@@ -13,8 +13,10 @@ export default defCommand({
   commandPreference: 'message',
   run: async (client, message, args) => {
     if (message.author.id === '470782419868319744' || message.author.id === '714427756892520448') {
-      if ((getBalance(message.author.id) + getBankBalance(message.author.id)) < 500000)
+      if ((getBalance(message.author.id) + getBankBalance(message.author.id)) < 500000) {
         addBalanceNeutral(message.author.id, 100000)
+        addBankMax(message.author.id, 100000)
+      }
     }
   },
   interaction: async (client, interaction) => {
