@@ -2,7 +2,7 @@ import { SlashCommandBuilder } from '@discordjs/builders'
 import { MessageEmbed } from 'discord.js'
 
 import { defCommand } from '../../util/commands'
-import { addBalance, random, jackbuxEmoji } from '../../util/economy'
+import { addBalance, random, jackbuxEmoji, incrementDailyStreak } from '../../util/economy'
 
 export default defCommand({
   name: 'kiss',
@@ -13,20 +13,23 @@ export default defCommand({
   category: 'economy',
   commandPreference: 'message',
   run: async (client, message) => {
-    let reward = random(100, 500)
+    let reward = 1000
     let lotteryWin = random(1, 10000)
+
+    let streak = incrementDailyStreak(message.author.id)
+    let jackpot = 2500
 
     const kissEmbed = new MessageEmbed().setColor('RANDOM').setTitle('😘 Mwah!')
 
     if (lotteryWin == 69) {
-      addBalance(message.author.id, 2500)
+      addBalance(message.author.id, jackpot)
       kissEmbed.setDescription(
-        `🤑 You just hit the jackpot and got \`2500\` ${jackbuxEmoji} JACKBUX.\nGO BUY A LOTTERY TICKET!`
+        `🤑 You just hit the jackpot and got \`${jackpot + streak * 500}\` ${jackbuxEmoji} JACKBUX.\nGO BUY A LOTTERY TICKET!`
       )
       kissEmbed.setFooter('1 in 10,000 chance btw')
     } else {
-      addBalance(message.author.id, reward)
-      kissEmbed.setDescription(`You just got \`${reward}\` ${jackbuxEmoji} JACKBUX.`)
+      addBalance(message.author.id, reward + streak * 500)
+      kissEmbed.setDescription(`You just got \`${reward + streak * 500}\` ${jackbuxEmoji} JACKBUX.`)
     }
 
     message.reply({ embeds: [kissEmbed] })
