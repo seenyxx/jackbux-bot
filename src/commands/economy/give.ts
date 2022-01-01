@@ -50,6 +50,7 @@ export default defCommand({
       } else {
         subtractBalance(message.author.id, userBalance)
         addBalance(mentionedUser.id, userBalance)
+        mentionedUser.send(`${message.author.tag} just gave you \`${userBalance}\` ${jackbuxEmoji}`).catch(() => {})
         message.reply({ embeds: [giveCurrencyEmbed(message.author, userBalance, mentionedUser)] })
       }
     } else {
@@ -65,6 +66,7 @@ export default defCommand({
 
       subtractBalance(message.author.id, intAmount)
       addBalance(mentionedUser.id, intAmount)
+      mentionedUser.send(`${message.author.tag} just gave you \`${intAmount}\` ${jackbuxEmoji}`).catch(() => {})
       message.reply({ embeds: [giveCurrencyEmbed(message.author, intAmount, mentionedUser)] })
     }
   },
