@@ -7,7 +7,7 @@ import { addBankBalance, getBalance, jackbuxEmoji, numberRegex, subtractBalance,
 function depositEmbed(amount: number,) {
   const embed = new MessageEmbed()
     .setColor('GREEN')
-    .setTitle(`Withdraw`)
+    .setTitle(`Deposit`)
     .setDescription(`You have deposited \`${amount}\` ${jackbuxEmoji} into your bank.`)
 
   return embed

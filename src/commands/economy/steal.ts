@@ -38,7 +38,7 @@ export default defCommand({
       throw new Error('Your target must at least have 300 JACKBUX!')
     }
 
-    let stealSuccess = random(1, 10)
+    let stealSuccess = random(1, 20)
     let stolenAmount = random(Math.floor(targetBal / 4), Math.floor(targetBal / 1.5))
     let lostAmount = random(Math.floor(userBal / 6), Math.floor(userBal / 2))
 
@@ -58,7 +58,7 @@ export default defCommand({
       const embed = new MessageEmbed()
       .setColor('RED')
       .setTitle(`You tried to steal from **${mentionedUser.tag}**`)
-      .setDescription(`You just paid a fine of **${mentionedUser.tag}** \`${lostAmount}\` ${jackbuxEmoji} for trying to steal from them!`)
+      .setDescription(`You just paid a fine of \`${lostAmount}\` ${jackbuxEmoji} for trying to steal from **${mentionedUser.tag}**!`)
 
       addBalance(mentionedUser.id, lostAmount)
       subtractBalance(message.author.id, lostAmount)
