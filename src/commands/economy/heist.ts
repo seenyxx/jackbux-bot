@@ -78,6 +78,6 @@ export default defCommand({
     return
   },
   slashCommand: new SlashCommandBuilder()
-    .setName('steal')
+    .setName('heist')
     .setDescription('Steal JACKBUX from someone else'),
 })
