@@ -11,6 +11,8 @@ export function addBalance(userId: string, added: number) {
   addBankMax(userId, Math.floor(getBalance(userId) / 500))
 }
 
+export function getDailyStreak()
+
 export function subtractBalance(userId: string, subtracted: number) {
   economy.subtract(`${userId}.wallet`, subtracted)
 }

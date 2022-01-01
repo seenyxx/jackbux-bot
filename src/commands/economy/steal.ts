@@ -39,7 +39,7 @@ export default defCommand({
     }
 
     let stealSuccess = random(1, 4)
-    let stolenAmount = random(Math.floor(targetBal / 4), Math.floor(targetBal / 1.5))
+    let stolenAmount = random(Math.floor(targetBal / 6), Math.floor(targetBal / 1.5))
     let lostAmount = random(Math.floor(userBal / 6), Math.floor(userBal / 2))
 
     if (stealSuccess == 1) {
