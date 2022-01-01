@@ -42,7 +42,7 @@ export default defCommand({
     let stolenAmount = random(Math.floor(targetBal / 4), Math.floor(targetBal / 1.5))
     let lostAmount = random(Math.floor(userBal / 6), Math.floor(userBal / 2))
 
-    if (stealSuccess == 10) {
+    if (stealSuccess == 1) {
       const embed = new MessageEmbed()
         .setColor('GREEN')
         .setTitle(`You stole from **${mentionedUser.tag}**`)

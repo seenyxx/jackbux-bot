@@ -6,7 +6,7 @@ import { addBalance, random, jackbuxEmoji } from '../../util/economy'
 
 export default defCommand({
   name: 'kiss',
-  aliases: [],
+  aliases: ['daily'],
   cooldown: 18 * 60 * 60,
   description: 'Give a kiss for 5 JACKBUX',
   usage: '',
