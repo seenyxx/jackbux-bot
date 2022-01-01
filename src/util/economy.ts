@@ -1,3 +1,4 @@
+import { randomBytes } from 'crypto';
 import db from 'quick.db'
 
 const economy = new db.table('economy')
@@ -90,7 +91,12 @@ export function setBankMax(userId: string, amount: number) {
 }
 
 export function random(min: number, max: number) {
-  return Math.floor(Math.random() * (max - min + 1)) + min
+  const buf = randomBytes(1)
+
+  let decimal = parseInt(buf.toString('hex'), 16).toString().substring(0, 2)
+
+  return Math.floor(parseFloat(`0.${decimal}`) * (max - min + 1) + min)
+  // return Math.floor(Math.random() * (max - min + 1)) + min
 }
 
 export function getInventory(userId: string): string[] {
