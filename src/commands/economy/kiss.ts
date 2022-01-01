@@ -19,7 +19,7 @@ export default defCommand({
     let streak = incrementDailyStreak(message.author.id)
     let jackpot = 2500
 
-    const kissEmbed = new MessageEmbed().setColor('RANDOM').setTitle('😘 Mwah!')
+    const kissEmbed = new MessageEmbed().setColor('RANDOM').setTitle(`😘 Mwah! (${streak} day streak)`)
 
     if (lotteryWin == 69) {
       addBalance(message.author.id, jackpot)
