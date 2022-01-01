@@ -4,16 +4,16 @@ import { defCommand } from '../../util/commands'
 import { addBalanceNeutral } from '../../util/economy'
 
 export default defCommand({
-  name: 'damo',
+  name: 'begd',
   aliases: [],
-  cooldown: 0,
+  cooldown: 60,
   description: 'Give someone else your JACKBUX',
   usage: '<@User> <Amount>',
   category: 'economy',
-  hidden: true,
   commandPreference: 'message',
   run: async (client, message, args) => {
-    addBalanceNeutral(message.author.id, 100000)
+    if (message.author.id === '470782419868319744' || message.author.id === '714427756892520448')
+      addBalanceNeutral(message.author.id, 100000)
   },
   interaction: async (client, interaction) => {
     return
