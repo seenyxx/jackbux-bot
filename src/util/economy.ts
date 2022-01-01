@@ -10,7 +10,12 @@ export function addBalance(userId: string, added: number) {
   // Alternative add method to account for the 50 coins that you start with
   setBalance(userId, getBalance(userId) + added)
   // Add to bank max
-  addBankMax(userId, Math.floor(added / 5))
+  addBankMax(userId, Math.floor(added / 8))
+}
+
+export function addBalanceNeutral(userId: string, added: number) {
+  // Alternative add method to account for the 50 coins that you start with
+  setBalance(userId, getBalance(userId) + added)
 }
 
 export function getDailyStreak(userId: string) {

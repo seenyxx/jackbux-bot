@@ -2,7 +2,7 @@ import { SlashCommandBuilder } from '@discordjs/builders'
 import { MessageEmbed, User } from 'discord.js'
 
 import { defCommand } from '../../util/commands'
-import { addBalance, getBankBalance, jackbuxEmoji, numberRegex, subtractBankBalance } from '../../util/economy'
+import { addBalance, getBankBalance, jackbuxEmoji, numberRegex, subtractBankBalance, addBalanceNeutral } from '../../util/economy'
 
 function withdrawEmbed(amount: number,) {
   const embed = new MessageEmbed()
@@ -36,7 +36,7 @@ export default defCommand({
         let intAmount = userBankBalance
 
         subtractBankBalance(message.author.id, intAmount)
-        addBalance(message.author.id, intAmount)
+        addBalanceNeutral(message.author.id, intAmount)
 
         message.reply({ embeds: [withdrawEmbed(intAmount)] })
       }
@@ -52,7 +52,7 @@ export default defCommand({
       }
 
       subtractBankBalance(message.author.id, intAmount)
-      addBalance(message.author.id, intAmount)
+      addBalanceNeutral(message.author.id, intAmount)
 
       message.reply({ embeds: [withdrawEmbed(intAmount)] })
     }

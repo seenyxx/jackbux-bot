@@ -14,7 +14,7 @@ export default defCommand({
   commandPreference: 'message',
   run: async (client, message) => {
     let reward = random(200, 500)
-    let win = random(1, 3)
+    let win = random(1, 4)
     let lotteryWin = random(1, 100000)
 
     const ofEmbed = new MessageEmbed().setColor('RANDOM').setTitle('Beg')

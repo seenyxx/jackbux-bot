@@ -2,6 +2,7 @@ import { SlashCommandBuilder } from '@discordjs/builders'
 import { MessageEmbed, User } from 'discord.js'
 
 import { defCommand } from '../../util/commands'
+import { addBalanceNeutral } from '../../util/economy'
 import {
   addBalance,
   random,
@@ -49,7 +50,7 @@ export default defCommand({
         throw new Error("You don't have any JACKBUX to give!")
       } else {
         subtractBalance(message.author.id, userBalance)
-        addBalance(mentionedUser.id, userBalance)
+        addBalanceNeutral(mentionedUser.id, userBalance)
         mentionedUser.send(`${message.author.tag} just gave you \`${userBalance}\` ${jackbuxEmoji}`).catch(() => {})
         message.reply({ embeds: [giveCurrencyEmbed(message.author, userBalance, mentionedUser)] })
       }
@@ -65,7 +66,7 @@ export default defCommand({
       }
 
       subtractBalance(message.author.id, intAmount)
-      addBalance(mentionedUser.id, intAmount)
+      addBalanceNeutral(mentionedUser.id, intAmount)
       mentionedUser.send(`${message.author.tag} just gave you \`${intAmount}\` ${jackbuxEmoji}`).catch(() => {})
       message.reply({ embeds: [giveCurrencyEmbed(message.author, intAmount, mentionedUser)] })
     }

@@ -27,7 +27,7 @@ function gambleEmbed(
     embed.setDescription(
       `You have ${result == 'win' ? 'won' : 'lost'} \`${amount}\` ${jackbuxEmoji}`
     )
-  else embed.setDescription(`You have not lost or won anything`)
+  else embed.setDescription(`You have not lost nor won anything`)
   embed
     .addField(user.username, `Rolled a \`${roll}\``, true)
     .addField('Dealer', `Rolled a \`${dealerRoll}\``, true)
