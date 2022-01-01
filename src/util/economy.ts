@@ -3,6 +3,7 @@ import db from 'quick.db'
 const economy = new db.table('economy')
 export const jackbuxEmoji = '<:dongbux:925549549660028979>'
 export const numberRegex = /^[0-9]+$/g
+export const dailyStreakAllowedTime = (18 + 12) * 60 * 60 * 1000
 
 export function addBalance(userId: string, added: number) {
   // Alternative add method to account for the 50 coins that you start with
@@ -11,7 +12,34 @@ export function addBalance(userId: string, added: number) {
   addBankMax(userId, Math.floor(getBalance(userId) / 500))
 }
 
-// export function getDailyStreak()
+export function getDailyStreak(userId: string) {
+  return economy.get(`${userId}.streak`)
+}
+
+export function setDailyStreak(userId: string, streak: number) {
+  economy.set(`${userId}.streak`, streak)
+}
+
+export function getNextDailyTimestamp(userId: string) {
+  return economy.get(`${userId}.streakTimestamp`) || 0
+}
+
+export function setNextDailyTimestamp(userId: string, timestamp: number) {
+  return economy.set(`${userId}.streakTimestamp`, timestamp)
+}
+export function incrementDailyStreak(userId: string) {
+  let now = Date.now()
+
+  if (now <= getNextDailyTimestamp(userId)) {
+    setDailyStreak(userId, getDailyStreak(userId) + 1)
+    setNextDailyTimestamp(userId, now + dailyStreakAllowedTime)
+  } else {
+    setDailyStreak(userId, 0)
+    setNextDailyTimestamp(userId, now + dailyStreakAllowedTime)
+  }
+
+  return getDailyStreak(userId)
+}
 
 export function subtractBalance(userId: string, subtracted: number) {
   economy.subtract(`${userId}.wallet`, subtracted)
