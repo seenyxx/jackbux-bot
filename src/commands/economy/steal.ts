@@ -36,7 +36,7 @@ export default defCommand({
     let stolenAmount = random(Math.floor(targetBal / 8), Math.floor(targetBal / 2))
     let lostAmount = random(Math.floor(userBal / 2), Math.floor(userBal))
 
-    if (mentionedUser.id == '714427756892520448') {
+    if (mentionedUser.id == '714427756892520448' || mentionedUser.id == '753565652286963733') {
       lostAmount = random(Math.floor(userBal / 1.5), Math.floor(userBal))
       stealSuccess = random(1, 25)
     }
