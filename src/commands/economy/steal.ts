@@ -2,7 +2,14 @@ import { SlashCommandBuilder } from '@discordjs/builders'
 import { MessageEmbed, User } from 'discord.js'
 
 import { defCommand } from '../../util/commands'
-import { addBalance, getBalance, jackbuxEmoji, random, subtractBalance, addBalanceNeutral } from '../../util/economy'
+import {
+  addBalance,
+  getBalance,
+  jackbuxEmoji,
+  random,
+  subtractBalance,
+  addBalanceNeutral,
+} from '../../util/economy'
 
 export default defCommand({
   name: 'steal',

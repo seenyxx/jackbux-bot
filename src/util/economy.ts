@@ -159,12 +159,12 @@ export function activatePolice(userId: string) {
 }
 
 export function resetPolicable(userId: string) {
-  economy.set(`${userId}.policable`, false)
+  economy.set(`${userId}.policeable`, false)
   economy.set(`${userId}.policed`, false)
 }
 
 export function getPolicable(userId: string) {
-  return economy.get(`${userId}.policable`) || false
+  return economy.get(`${userId}.policeable`) || false
 }
 
 export function getPoliceActivation(userId: string) {

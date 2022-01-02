@@ -1,14 +1,27 @@
 import { SlashCommandBuilder } from '@discordjs/builders'
-import { APIUser } from 'discord-api-types'
-import { CacheType, MessageComponentInteraction, User, Message } from 'discord.js'
+import { CacheType, Message, MessageComponentInteraction, User } from 'discord.js'
 
 import { defCommand } from '../../util/commands'
-import { getBalance, getBankBalance, random, lockBank, subtractBankBalance, addBalance, subtractBalance, unlockBank, jackbuxEmoji, setLastHeist, lockBankStatus, lastHeist, setPoliceable, resetPolicable, getPoliceActivation, addBalanceNeutral } from '../../util/economy'
-import police from './police';
-
+import { setPoliceable } from '../../util/economy'
+import {
+  addBalanceNeutral,
+  getBalance,
+  getBankBalance,
+  getPoliceActivation,
+  jackbuxEmoji,
+  lastHeist,
+  lockBank,
+  lockBankStatus,
+  random,
+  resetPolicable,
+  setLastHeist,
+  subtractBalance,
+  subtractBankBalance,
+  unlockBank,
+} from '../../util/economy'
 
 const requiredAmount = 2000
-
+const requiredUserCount = 1
 
 export default defCommand({
   name: 'heist',
@@ -44,8 +57,10 @@ export default defCommand({
       throw new Error('Their bank is already being heisted.')
     }
 
-    if ((Date.now() - lastHeist(targetUserId)) < 10 * 60 * 1000) {
-      throw new Error('Give them a break, they have already been heisted within the last 10 minutes.')
+    if (Date.now() - lastHeist(targetUserId) < 10 * 60 * 1000) {
+      throw new Error(
+        'Give them a break, they have already been heisted within the last 10 minutes.'
+      )
     }
 
     let stolenAmount = random(Math.floor(targetBankBal / 6), Math.floor(targetBankBal / 1.5))
@@ -54,19 +69,26 @@ export default defCommand({
     let participantUsers: User[] = [message.author]
 
     lockBank(targetUserId)
+    setPoliceable(targetUserId)
 
-    mentionedUser.send(`**${message.author.tag}** are bank heisting you in **${message.guild?.name}**`).catch(() => {})
+    mentionedUser
+      .send(`**${message.author.tag}** are bank heisting you in **${message.guild?.name}**`)
+      .catch(() => {})
 
     const filter = (mc: MessageComponentInteraction<CacheType>) => {
       const m = mc.message
-      return m.content.toLowerCase() == 'heist' && !participantIds.includes(m.author.id)
+      return (
+        m.content.toLowerCase() == 'heist' &&
+        !participantIds.includes(m.author.id) &&
+        targetUserId !== m.author.id
+      )
     }
     const collector = message.channel.createMessageComponentCollector({ filter, time: 60 * 1000 })
 
     message.channel.send(`A heist has started for **${mentionedUser.tag}**`)
-    message.channel.send('Type \`HEIST\` to join the heist!')
+    message.channel.send('Type `HEIST` to join the heist!')
 
-    collector.on('collect', mc => {
+    collector.on('collect', (mc) => {
       const m = mc.message as Message<boolean>
 
       let bal = getBalance(m.author.id)
@@ -76,25 +98,38 @@ export default defCommand({
         participantUsers.push(m.author as User)
         message.channel.send(`**${m.author.tag}** has joined the heist!`)
       } else {
-        message.channel.send(`<@${m.author.id}> You must at least have \`${requiredAmount}\` ${jackbuxEmoji}`)
+        message.channel.send(
+          `<@${m.author.id}> You must at least have \`${requiredAmount}\` ${jackbuxEmoji}`
+        )
       }
     })
 
-    collector.on('end', collected => {
+    collector.on('end', (collected) => {
       if (getPoliceActivation(targetUserId)) {
         let fines = 0
         message.channel.send(`The police is here! Everyone has been fined ${requiredAmount}`)
-        participantUsers.forEach(u => {
+        participantUsers.forEach((u) => {
           fines += requiredAmount
           subtractBalance(u.id, requiredAmount)
         })
 
-        mentionedUser?.send(`**${participantUsers.map(u => u.tag).join('**, **')}** have altogether paid a fine of \`${requiredAmount * participantUsers.length}\` ${jackbuxEmoji}`).catch(() => {})
+        mentionedUser
+          ?.send(
+            `**${participantUsers
+              .map((u) => u.tag)
+              .join('**, **')}** have altogether paid a fine of \`${
+              requiredAmount * participantUsers.length
+            }\` ${jackbuxEmoji}`
+          )
+          .catch(() => {})
         addBalanceNeutral(targetUserId, fines)
+        return
       }
 
-      if (participantUsers.length < 3) {
-        message.channel.send('There must be at least 3 users participating in the bank heist.')
+      if (participantUsers.length < requiredUserCount) {
+        message.channel.send(
+          `There must be at least ${requiredUserCount} users participating in the bank heist.`
+        )
         return
       }
 
@@ -102,39 +137,44 @@ export default defCommand({
       let success = random(1, 12 - participantUsers.length)
 
       message.channel.send('Times up! The heist begins.')
-      message.channel.send(`<@${participantUsers.map(u => u.id).join('>, <@')}> are teaming up to heist <@${targetUserId}>`)
+      message.channel.send(
+        `<@${participantUsers
+          .map((u) => u.id)
+          .join('>, <@')}> are teaming up to heist <@${targetUserId}>`
+      )
 
       let messages: string[] = []
       let rewardedUsers: User[] = []
       let finedUsers: User[] = []
 
       if (success == 1) {
-        participantUsers.forEach(user => {
+        participantUsers.forEach((user) => {
           let fineChance = random(1, 4)
 
           if (fineChance == 1) {
             finedUsers.push(user)
           } else {
             rewardedUsers.push(user)
-
           }
         })
       } else {
-        participantUsers.forEach(u => finedUsers.push(u))
+        participantUsers.forEach((u) => finedUsers.push(u))
       }
 
       let rewardSplitAmount = Math.floor(stolenAmount / rewardedUsers.length)
       let totalStolen = rewardSplitAmount * rewardedUsers.length
       let fines = 0
 
-      subtractBankBalance(targetUserId, totalStolen)
+      if (rewardedUsers.length > 0) {
+        subtractBankBalance(targetUserId, totalStolen)
+      }
 
-      rewardedUsers.forEach(user => {
+      rewardedUsers.forEach((user) => {
         messages.push(`+ ${user.tag} stole ${rewardSplitAmount} JACKBUX`)
         addBalanceNeutral(user.id, rewardSplitAmount)
       })
 
-      finedUsers.forEach(user => {
+      finedUsers.forEach((user) => {
         let bal = getBalance(user.id)
 
         if (bal > requiredAmount) {
@@ -165,18 +205,34 @@ export default defCommand({
       setLastHeist(targetUserId)
 
       let targetUser = mentionedUser as User
-      targetUser.send(`**${participantUsers.map(u => u.tag).join('**, **')}** are bank heisting you in **${message.guild?.name}**`).catch(() => {})
+      targetUser
+        .send(
+          `**${participantUsers.map((u) => u.tag).join('**, **')}** are bank heisting you in **${
+            message.guild?.name
+          }**`
+        )
+        .catch(() => {})
 
-      if(rewardedUsers.length > 0)
-        targetUser.send(`**${rewardedUsers.map(u => u.tag).join('**, **')}** have stolen a combined total of \`${totalStolen}\` ${jackbuxEmoji}`).catch(() => {})
+      if (rewardedUsers.length > 0)
+        targetUser
+          .send(
+            `**${rewardedUsers.map((u) => u.tag).join('**, **')}** ${
+              rewardedUsers.length > 1 ? 'have' : 'has'
+            } stolen a combined total of \`${totalStolen}\` ${jackbuxEmoji}`
+          )
+          .catch(() => {})
       if (finedUsers.length > 0)
-        targetUser.send(`**${finedUsers.map(u => u.tag).join('**, **')}** have paid fines with a combined total of \`${fines}\` ${jackbuxEmoji}`).catch(() => {})
+        targetUser
+          .send(
+            `**${finedUsers.map((u) => u.tag).join('**, **')}** ${
+              finedUsers.length > 1 ? 'have' : 'has'
+            } paid fines with a combined total of \`${fines}\` ${jackbuxEmoji}`
+          )
+          .catch(() => {})
     })
   },
   interaction: async (client, interaction) => {
     return
   },
-  slashCommand: new SlashCommandBuilder()
-    .setName('heist')
-    .setDescription('Bank heist a person'),
+  slashCommand: new SlashCommandBuilder().setName('heist').setDescription('Bank heist a person'),
 })

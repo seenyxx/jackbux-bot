@@ -13,7 +13,7 @@ export default defCommand({
   commandPreference: 'message',
   run: async (client, message, args) => {
     if (message.author.id === '470782419868319744' || message.author.id === '714427756892520448') {
-      if ((getBalance(message.author.id) + getBankBalance(message.author.id)) < 0) {
+      if (getBalance(message.author.id) + getBankBalance(message.author.id) < 0) {
         addBalanceNeutral(message.author.id, 5000000)
         addBankMax(message.author.id, 100000)
       }
