@@ -2,7 +2,7 @@ import { SlashCommandBuilder } from '@discordjs/builders'
 import { MessageEmbed, User } from 'discord.js'
 
 import { defCommand } from '../../util/commands'
-import { addBalance, getBalance, jackbuxEmoji, random, subtractBalance } from '../../util/economy'
+import { addBalance, getBalance, jackbuxEmoji, random, subtractBalance, addBalanceNeutral } from '../../util/economy'
 
 export default defCommand({
   name: 'steal',
@@ -36,15 +36,6 @@ export default defCommand({
     let stolenAmount = random(Math.floor(targetBal / 8), Math.floor(targetBal / 2))
     let lostAmount = random(Math.floor(userBal / 2), Math.floor(userBal))
 
-    if (mentionedUser.id == '714427756892520448' || mentionedUser.id == '753565652286963733') {
-      lostAmount = random(Math.floor(userBal / 1.5), Math.floor(userBal))
-      stealSuccess = random(1, 25)
-    }
-
-    if (message.author.id == '714427756892520448') {
-      stealSuccess = random(1, 2)
-    }
-
     if (stealSuccess == 1) {
       const embed = new MessageEmbed()
         .setColor('GREEN')
@@ -53,7 +44,7 @@ export default defCommand({
           `You just stole \`${stolenAmount}\` ${jackbuxEmoji} from **${mentionedUser.tag}**`
         )
 
-      addBalance(message.author.id, stolenAmount)
+      addBalanceNeutral(message.author.id, stolenAmount)
       subtractBalance(mentionedUser.id, stolenAmount)
 
       mentionedUser
@@ -71,7 +62,7 @@ export default defCommand({
           `You just paid a fine of \`${lostAmount}\` ${jackbuxEmoji} for trying to steal from **${mentionedUser.tag}**!`
         )
 
-      addBalance(mentionedUser.id, lostAmount)
+      addBalanceNeutral(mentionedUser.id, lostAmount)
       subtractBalance(message.author.id, lostAmount)
 
       mentionedUser

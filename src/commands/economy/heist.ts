@@ -3,7 +3,8 @@ import { APIUser } from 'discord-api-types'
 import { CacheType, MessageComponentInteraction, User, Message } from 'discord.js'
 
 import { defCommand } from '../../util/commands'
-import { getBalance, getBankBalance, random, lockBank, subtractBankBalance, addBalance, subtractBalance, unlockBank, jackbuxEmoji, setLastHeist, lockBankStatus, lastHeist } from '../../util/economy'
+import { getBalance, getBankBalance, random, lockBank, subtractBankBalance, addBalance, subtractBalance, unlockBank, jackbuxEmoji, setLastHeist, lockBankStatus, lastHeist, setPoliceable, resetPolicable, getPoliceActivation, addBalanceNeutral } from '../../util/economy'
+import police from './police';
 
 
 const requiredAmount = 2000
@@ -80,6 +81,18 @@ export default defCommand({
     })
 
     collector.on('end', collected => {
+      if (getPoliceActivation(targetUserId)) {
+        let fines = 0
+        message.channel.send(`The police is here! Everyone has been fined ${requiredAmount}`)
+        participantUsers.forEach(u => {
+          fines += requiredAmount
+          subtractBalance(u.id, requiredAmount)
+        })
+
+        mentionedUser?.send(`**${participantUsers.map(u => u.tag).join('**, **')}** have altogether paid a fine of \`${requiredAmount * participantUsers.length}\` ${jackbuxEmoji}`).catch(() => {})
+        addBalanceNeutral(targetUserId, fines)
+      }
+
       if (participantUsers.length < 3) {
         message.channel.send('There must be at least 3 users participating in the bank heist.')
         return
@@ -103,6 +116,7 @@ export default defCommand({
             finedUsers.push(user)
           } else {
             rewardedUsers.push(user)
+
           }
         })
       } else {
@@ -117,7 +131,7 @@ export default defCommand({
 
       rewardedUsers.forEach(user => {
         messages.push(`+ ${user.tag} stole ${rewardSplitAmount} JACKBUX`)
-        addBalance(user.id, rewardSplitAmount)
+        addBalanceNeutral(user.id, rewardSplitAmount)
       })
 
       finedUsers.forEach(user => {
@@ -142,17 +156,21 @@ export default defCommand({
         }
       })
 
-      addBalance(targetUserId, fines)
+      addBalanceNeutral(targetUserId, fines)
 
       message.channel.send(messages.join('\n'))
 
+      resetPolicable(targetUserId)
       unlockBank(targetUserId)
       setLastHeist(targetUserId)
 
       let targetUser = mentionedUser as User
       targetUser.send(`**${participantUsers.map(u => u.tag).join('**, **')}** are bank heisting you in **${message.guild?.name}**`).catch(() => {})
-      targetUser.send(`**${rewardedUsers.map(u => u.tag).join('**, **')}** have stolen a combined total of \`${totalStolen}\` ${jackbuxEmoji}`).catch(() => {})
-      targetUser.send(`**${finedUsers.map(u => u.tag).join('**, **')}** have paid fines with a combined total of \`${fines}\` ${jackbuxEmoji}`).catch(() => {})
+
+      if(rewardedUsers.length > 0)
+        targetUser.send(`**${rewardedUsers.map(u => u.tag).join('**, **')}** have stolen a combined total of \`${totalStolen}\` ${jackbuxEmoji}`).catch(() => {})
+      if (finedUsers.length > 0)
+        targetUser.send(`**${finedUsers.map(u => u.tag).join('**, **')}** have paid fines with a combined total of \`${fines}\` ${jackbuxEmoji}`).catch(() => {})
     })
   },
   interaction: async (client, interaction) => {

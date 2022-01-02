@@ -148,3 +148,25 @@ export function lastHeist(userId: string) {
 export function setLastHeist(userId: string) {
   economy.set(`${userId}.lastHeist`, Date.now())
 }
+
+export function setPoliceable(userId: string) {
+  economy.set(`${userId}.policed`, false)
+  economy.set(`${userId}.policeable`, true)
+}
+
+export function activatePolice(userId: string) {
+  economy.set(`${userId}.policed`, true)
+}
+
+export function resetPolicable(userId: string) {
+  economy.set(`${userId}.policable`, false)
+  economy.set(`${userId}.policed`, false)
+}
+
+export function getPolicable(userId: string) {
+  return economy.get(`${userId}.policable`) || false
+}
+
+export function getPoliceActivation(userId: string) {
+  return economy.get(`${userId}.policed`) || false
+}
