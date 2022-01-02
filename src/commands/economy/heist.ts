@@ -96,11 +96,10 @@ export default defCommand({
       if (bal < requiredAmount) {
         participantIds.push(m.author.id)
         participantUsers.push(m.author as User)
-        message.channel.send(`**${m.author.tag}** has joined the heist!`)
+        m.react('✅')
+        m.reply(`**${m.author.tag}** has joined the heist!`)
       } else {
-        message.channel.send(
-          `<@${m.author.id}> You must at least have \`${requiredAmount}\` ${jackbuxEmoji}`
-        )
+        m.reply(`<@${m.author.id}> You must at least have \`${requiredAmount}\` ${jackbuxEmoji}`)
       }
     })
 
@@ -198,7 +197,7 @@ export default defCommand({
 
       addBalanceNeutral(targetUserId, fines)
 
-      message.channel.send(messages.join('\n'))
+      message.channel.send(`\`\`\`diff\n${messages.join('\n')}\`\`\``)
 
       resetPolicable(targetUserId)
       unlockBank(targetUserId)

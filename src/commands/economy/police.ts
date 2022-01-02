@@ -34,7 +34,9 @@ export default defCommand({
       throw new Error('Nobody is heisting your bank right now!')
     }
 
-    message.reply('The police are on their way! 🚨\nAnyone participating in the bank heist by the end of the recruiting period will be fined!')
+    message.reply(
+      'The police are on their way! 🚨\nAnyone participating in the bank heist by the end of the recruiting period will be fined!'
+    )
     activatePolice(message.author.id)
   },
   interaction: async (client, interaction) => {
