@@ -30,7 +30,6 @@ export default defCommand({
   category: 'economy',
   commandPreference: 'message',
   run: async (client, message, args) => {
-    unlockBank(message.author.id)
     let mentionedUser = message.mentions.users.first()
     if (!mentionedUser) {
       throw new Error('You need to mention a user!')
