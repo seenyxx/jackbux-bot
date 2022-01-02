@@ -2,6 +2,7 @@ import { SlashCommandBuilder } from '@discordjs/builders'
 import { MessageEmbed } from 'discord.js'
 
 import { defCommand } from '../../util/commands'
+import { lockBankStatus } from '../../util/economy'
 import {
   addBankBalance,
   getBalance,
@@ -38,6 +39,10 @@ export default defCommand({
 
     if (!amount) {
       throw new Error('You must provide an amount!')
+    }
+
+    if (lockBankStatus(message.author.id) == true) {
+      throw new Error('You cannot deposit anything into your bank right now!')
     }
 
     if (amount == 'all') {

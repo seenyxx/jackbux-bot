@@ -128,3 +128,15 @@ export function remInventoryItem(userId: string, itemId: string) {
     setInventory(userId, inv)
   }
 }
+
+export function lockBank(userId: string) {
+  economy.set(`${userId}.lockbank`, true)
+}
+
+export function unlockBank(userId: string) {
+  economy.set(`${userId}.lockbank`, false)
+}
+
+export function lockBankStatus(userId: string) {
+  return economy.get(`${userId}.lockbank`) || false
+}

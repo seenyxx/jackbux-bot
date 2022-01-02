@@ -1,8 +1,13 @@
 import { SlashCommandBuilder } from '@discordjs/builders'
-import { MessageEmbed, User } from 'discord.js'
+import { APIUser } from 'discord-api-types'
+import { CacheType, MessageComponentInteraction, User, Message } from 'discord.js'
 
 import { defCommand } from '../../util/commands'
-import { addBalance, getBalance, getBankBalance, jackbuxEmoji, random, subtractBalance } from '../../util/economy'
+import { getBalance, getBankBalance, random, lockBank, subtractBankBalance, addBalance, subtractBalance, unlockBank, jackbuxEmoji } from '../../util/economy'
+
+
+const requiredAmount = 2000
+
 
 export default defCommand({
   name: 'heist',
@@ -14,70 +19,126 @@ export default defCommand({
   commandPreference: 'message',
   run: async (client, message, args) => {
     let mentionedUser = message.mentions.users.first()
+
     if (!mentionedUser) {
       throw new Error('You need to mention a user!')
     }
     if (mentionedUser.bot) {
-      throw new Error("You can't steal from a bot.")
+      throw new Error("You can't heist a bot.")
     }
 
-    let userBal = getBankBalance(message.author.id)
-    let targetBal = getBankBalance(mentionedUser.id)
+    let targetUserId = mentionedUser.id
+    let userBal = getBalance(message.author.id)
+    let targetBankBal = getBankBalance(targetUserId)
 
-    if (userBal < 2000) {
-      throw new Error('You must at least have 300 JACKBUX!')
+    if (userBal < requiredAmount) {
+      throw new Error(`You must at least have ${requiredAmount} JACKBUX!`)
     }
 
-    if (targetBal < 5000) {
-      throw new Error('Your target must at least have 300 JACKBUX!')
+    if (targetBankBal < 5000) {
+      throw new Error('Your target must at least have 5000 JACKBUX in their bank!')
     }
 
-    let stealSuccess = random(1, 5)
-    let stolenAmount = random(Math.floor(targetBal / 8), Math.floor(targetBal / 2))
-    let lostAmount = random(Math.floor(userBal / 2), Math.floor(userBal))
+    let stolenAmount = random(Math.floor(targetBankBal / 6), Math.floor(targetBankBal / 1.5))
 
-    if (stealSuccess == 1) {
-      const embed = new MessageEmbed()
-        .setColor('GREEN')
-        .setTitle(`You stole from **${mentionedUser.tag}**`)
-        .setDescription(
-          `You just stole \`${stolenAmount}\` ${jackbuxEmoji} from **${mentionedUser.tag}**`
-        )
+    let participantIds: string[] = [message.author.id]
+    let participantUsers: User[] = [message.author]
 
-      addBalance(message.author.id, stolenAmount)
-      subtractBalance(mentionedUser.id, stolenAmount)
+    lockBank(targetUserId)
 
-      mentionedUser
-        .send(
-          `**${message.author.tag}** has stolen \`${stolenAmount}\`${jackbuxEmoji} from you in **${message.guild?.name}**`
-        )
-        .catch(() => {})
+    mentionedUser.send(`**${message.author.tag}** are bank heisting you in **${message.guild?.name}**`).catch(() => {})
 
-      message.reply({ embeds: [embed] })
-    } else {
-      const embed = new MessageEmbed()
-        .setColor('RED')
-        .setTitle(`You tried to steal from **${mentionedUser.tag}**`)
-        .setDescription(
-          `You just paid a fine of \`${lostAmount}\` ${jackbuxEmoji} for trying to steal from **${mentionedUser.tag}**!`
-        )
-
-      addBalance(mentionedUser.id, lostAmount)
-      subtractBalance(message.author.id, lostAmount)
-
-      mentionedUser
-        .send(
-          `You almost got stolen from by **${message.author.tag}** in **${message.guild?.name}** but they failed and paid you \`${lostAmount}\`${jackbuxEmoji}`
-        )
-        .catch(() => {})
-
-      message.reply({ embeds: [embed] })
+    const filter = (mc: MessageComponentInteraction<CacheType>) => {
+      const m = mc.message
+      return m.content.toLowerCase() == 'heist' && !participantIds.includes(m.author.id)
     }
+    const collector = message.channel.createMessageComponentCollector({ filter, time: 60 * 1000 })
+
+    collector.on('collect', mc => {
+      const m = mc.message as Message<boolean>
+      participantIds.push(m.author.id)
+      participantUsers.push(m.author as User)
+
+      m.react('💵')
+    })
+
+    collector.on('end', collected => {
+      if (participantUsers.length < 3) {
+        message.channel.send('There must be at least 3 users participating in the bank heist.')
+        return
+      }
+
+      let success = random(1, 12 - participantUsers.length)
+
+      message.channel.send('Times up! The heist begins.')
+
+      let messages: string[] = []
+      let rewardedUsers: User[] = []
+      let finedUsers: User[] = []
+
+      if (success == 1) {
+        participantUsers.forEach(user => {
+          let fineChance = random(1, 4)
+
+          if (fineChance == 1) {
+            finedUsers.push(user)
+          } else {
+            rewardedUsers.push(user)
+          }
+        })
+      } else {
+        participantUsers.forEach(u => finedUsers.push(u))
+      }
+
+      let rewardSplitAmount = Math.floor(stolenAmount / rewardedUsers.length)
+      let totalStolen = rewardSplitAmount * rewardedUsers.length
+      let fines = 0
+
+      subtractBankBalance(targetUserId, totalStolen)
+
+      rewardedUsers.forEach(user => {
+        messages.push(`+ ${user.tag} stole ${rewardSplitAmount} JACKBUX`)
+        addBalance(user.id, rewardSplitAmount)
+      })
+
+      finedUsers.forEach(user => {
+        let bal = getBalance(user.id)
+
+        if (bal > requiredAmount) {
+          let fine = random(Math.floor(bal / 3), Math.floor(bal / 1.5))
+
+          if (fine < requiredAmount) {
+            fines += requiredAmount
+            messages.push(`- ${user.tag} was caught and fined ${requiredAmount}`)
+            subtractBalance(user.id, requiredAmount)
+          } else {
+            fines += fine
+            messages.push(`- ${user.tag} was caught and fined ${fine}`)
+            subtractBalance(user.id, fine)
+          }
+        } else {
+          fines += bal
+          messages.push(`- ${user.tag} was caught and fined ${bal}`)
+          subtractBalance(user.id, bal)
+        }
+      })
+
+      addBalance(targetUserId, fines)
+
+      message.channel.send(messages.join('\n'))
+
+      unlockBank(targetUserId)
+
+      let targetUser = mentionedUser as User
+      targetUser.send(`**${participantUsers.map(u => u.tag).join('**, **')}** are bank heisting you in **${message.guild?.name}**`).catch(() => {})
+      targetUser.send(`**${rewardedUsers.map(u => u.tag).join('**, **')}** have stolen a combined total of \`${totalStolen}\` ${jackbuxEmoji}`).catch(() => {})
+      targetUser.send(`**${finedUsers.map(u => u.tag).join('**, **')}** have paid fines with a combined total of \`${fines}\` ${jackbuxEmoji}`).catch(() => {})
+    })
   },
   interaction: async (client, interaction) => {
     return
   },
   slashCommand: new SlashCommandBuilder()
     .setName('heist')
-    .setDescription('Steal JACKBUX from someone else'),
+    .setDescription('Bank heist a person'),
 })

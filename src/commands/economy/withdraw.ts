@@ -1,14 +1,14 @@
 import { SlashCommandBuilder } from '@discordjs/builders'
-import { MessageEmbed, User } from 'discord.js'
+import { MessageEmbed } from 'discord.js'
 
 import { defCommand } from '../../util/commands'
 import {
-  addBalance,
+  addBalanceNeutral,
   getBankBalance,
   jackbuxEmoji,
+  lockBankStatus,
   numberRegex,
   subtractBankBalance,
-  addBalanceNeutral,
 } from '../../util/economy'
 
 function withdrawEmbed(amount: number) {
@@ -34,6 +34,10 @@ export default defCommand({
 
     if (!amount) {
       throw new Error('You must provide an amount!')
+    }
+
+    if (lockBankStatus(message.author.id) == true) {
+      throw new Error('You cannot withdraw anything from your bank right now!')
     }
 
     if (amount == 'all') {
