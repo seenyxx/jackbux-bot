@@ -20,8 +20,8 @@ export default defCommand({
       .setTitle(`Your Balance`)
       .setDescription(
         `**Wallet:** \`${balance}\` ${jackbuxEmoji}\n**Bank:** \`${getBankBalance(
-          message.author.id
-        )} / ${getBankMax(message.author.id)}\``
+          mentionedUser ? mentionedUser.id : message.author.id
+        )} / ${getBankMax(mentionedUser ? mentionedUser.id : message.author.id)}\``
       )
 
     if (balance < 10) {
