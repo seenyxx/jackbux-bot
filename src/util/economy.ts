@@ -130,13 +130,21 @@ export function remInventoryItem(userId: string, itemId: string) {
 }
 
 export function lockBank(userId: string) {
-  economy.set(`${userId}.lockbank`, true)
+  economy.set(`${userId}.lockBank`, true)
 }
 
 export function unlockBank(userId: string) {
-  economy.set(`${userId}.lockbank`, false)
+  economy.set(`${userId}.lockBank`, false)
 }
 
-export function lockBankStatus(userId: string) {
-  return economy.get(`${userId}.lockbank`) || false
+export function lockBankStatus(userId: string): boolean {
+  return economy.get(`${userId}.lockBank`) || false
+}
+
+export function lastHeist(userId: string) {
+  return economy.get(`${userId}.lastHeist`) || 0
+}
+
+export function setLastHeist(userId: string) {
+  economy.set(`${userId}.lastHeist`, Date.now())
 }

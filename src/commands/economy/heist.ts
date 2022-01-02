@@ -3,7 +3,7 @@ import { APIUser } from 'discord-api-types'
 import { CacheType, MessageComponentInteraction, User, Message } from 'discord.js'
 
 import { defCommand } from '../../util/commands'
-import { getBalance, getBankBalance, random, lockBank, subtractBankBalance, addBalance, subtractBalance, unlockBank, jackbuxEmoji } from '../../util/economy'
+import { getBalance, getBankBalance, random, lockBank, subtractBankBalance, addBalance, subtractBalance, unlockBank, jackbuxEmoji, setLastHeist, lockBankStatus, lastHeist } from '../../util/economy'
 
 
 const requiredAmount = 2000
@@ -12,7 +12,7 @@ const requiredAmount = 2000
 export default defCommand({
   name: 'heist',
   aliases: ['bankheist', 'bankrob'],
-  cooldown: 60,
+  cooldown: 5 * 60,
   description: 'Bank heist a person',
   usage: '<@User>',
   category: 'economy',
@@ -39,6 +39,14 @@ export default defCommand({
       throw new Error('Your target must at least have 5000 JACKBUX in their bank!')
     }
 
+    if (lockBankStatus(targetUserId)) {
+      throw new Error('Their bank is already being heisted.')
+    }
+
+    if ((Date.now() - lastHeist(targetUserId)) < 10 * 60 * 1000) {
+      throw new Error('Give them a break, they have already been heisted within the last 10 minutes.')
+    }
+
     let stolenAmount = random(Math.floor(targetBankBal / 6), Math.floor(targetBankBal / 1.5))
 
     let participantIds: string[] = [message.author.id]
@@ -59,10 +67,16 @@ export default defCommand({
 
     collector.on('collect', mc => {
       const m = mc.message as Message<boolean>
-      participantIds.push(m.author.id)
-      participantUsers.push(m.author as User)
 
-      m.react('💵')
+      let bal = getBalance(m.author.id)
+
+      if (bal < requiredAmount) {
+        participantIds.push(m.author.id)
+        participantUsers.push(m.author as User)
+        message.channel.send(`**${m.author.tag}** has joined the heist!`)
+      } else {
+        message.channel.send(`<@${m.author.id}> You must at least have \`${requiredAmount}\` ${jackbuxEmoji}`)
+      }
     })
 
     collector.on('end', collected => {
@@ -71,9 +85,11 @@ export default defCommand({
         return
       }
 
+      setLastHeist(targetUserId)
       let success = random(1, 12 - participantUsers.length)
 
       message.channel.send('Times up! The heist begins.')
+      message.channel.send(`<@${participantUsers.map(u => u.id).join('>, <@')}> are teaming up to heist <@${targetUserId}>`)
 
       let messages: string[] = []
       let rewardedUsers: User[] = []
@@ -131,6 +147,7 @@ export default defCommand({
       message.channel.send(messages.join('\n'))
 
       unlockBank(targetUserId)
+      setLastHeist(targetUserId)
 
       let targetUser = mentionedUser as User
       targetUser.send(`**${participantUsers.map(u => u.tag).join('**, **')}** are bank heisting you in **${message.guild?.name}**`).catch(() => {})

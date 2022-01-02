@@ -2,7 +2,7 @@ import { SlashCommandBuilder } from '@discordjs/builders'
 import { MessageEmbed, User } from 'discord.js'
 
 import { defCommand } from '../../util/commands'
-import { addBalanceNeutral } from '../../util/economy'
+import { addBalanceNeutral, unlockBank } from '../../util/economy'
 import {
   addBalance,
   random,
@@ -30,6 +30,7 @@ export default defCommand({
   category: 'economy',
   commandPreference: 'message',
   run: async (client, message, args) => {
+    unlockBank(message.author.id)
     let mentionedUser = message.mentions.users.first()
     if (!mentionedUser) {
       throw new Error('You need to mention a user!')
