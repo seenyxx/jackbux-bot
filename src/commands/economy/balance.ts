@@ -12,7 +12,8 @@ export default defCommand({
   category: 'economy',
   commandPreference: 'message',
   run: async (client, message) => {
-    let balance = getBalance(message.author.id)
+    let mentionedUser = message.mentions.users.first()
+    let balance = getBalance(mentionedUser ? mentionedUser.id : message.author.id)
 
     const balanceEmbed = new MessageEmbed()
       .setColor('RANDOM')

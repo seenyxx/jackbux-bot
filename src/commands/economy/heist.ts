@@ -54,6 +54,9 @@ export default defCommand({
     }
     const collector = message.channel.createMessageComponentCollector({ filter, time: 60 * 1000 })
 
+    message.channel.send(`A heist has started for **${mentionedUser.tag}**`)
+    message.channel.send('Type \`HEIST\` to join the heist!')
+
     collector.on('collect', mc => {
       const m = mc.message as Message<boolean>
       participantIds.push(m.author.id)
