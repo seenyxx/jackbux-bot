@@ -5,30 +5,29 @@ import { defCommand } from '../../util/commands'
 import { addBalance, random, jackbuxEmoji } from '../../util/economy'
 
 export default defCommand({
-  name: 'stream',
-  aliases: [],
-  cooldown: 5 * 60,
+  name: 'strip',
+  aliases: ['wank'],
+  cooldown: 30,
   description: '😏',
   usage: '',
   category: 'economy',
   commandPreference: 'message',
   run: async (client, message) => {
-    let reward = random(300, 1000)
-    let lotteryWin = random(1, 100000)
+    let reward = random(300, 500)
+    let lotteryWin = random(1, 10)
 
-    const ofEmbed = new MessageEmbed().setColor('RANDOM').setTitle('📹 Stream')
+    const ofEmbed = new MessageEmbed().setColor('RANDOM').setTitle('😏')
 
     if (lotteryWin == 69) {
-      let highReward = random(2500, 10000)
+      let highReward = random(20000, 30000)
       addBalance(message.author.id, highReward)
       ofEmbed.setDescription(
-        `🤑 You just hit the streaming jackpot and got \`${highReward}\` ${jackbuxEmoji} JACKBUX.\nGO BUY A LOTTERY TICKET!`
+        `🤑 You just did the best one and got \`${highReward}\` ${jackbuxEmoji} JACKBUX.`
       )
-      ofEmbed.setFooter('1 in 100,000 chance btw')
     } else {
       addBalance(message.author.id, reward)
       ofEmbed.setDescription(
-        `You just got \`${reward}\` ${jackbuxEmoji} JACKBUX from being an internet personality.`
+        `You just got \`${reward}\` ${jackbuxEmoji} JACKBUX from 😏`
       )
     }
 
