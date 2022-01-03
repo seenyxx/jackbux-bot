@@ -2,6 +2,7 @@ import { SlashCommandBuilder } from '@discordjs/builders'
 import { MessageEmbed, User } from 'discord.js'
 
 import { defCommand } from '../../util/commands'
+import { subtractBankBalance } from '../../util/economy'
 import {
   addBalance,
   getBalance,
@@ -9,7 +10,10 @@ import {
   random,
   subtractBalance,
   addBalanceNeutral,
+  getBankBalance,
 } from '../../util/economy'
+
+const robLimit = 25000
 
 export default defCommand({
   name: 'steal',
@@ -28,18 +32,18 @@ export default defCommand({
       throw new Error("You can't steal from a bot.")
     }
 
-    let userBal = getBalance(message.author.id)
+    let userBal = getBankBalance(message.author.id)
     let targetBal = getBalance(mentionedUser.id)
 
-    if (userBal < 300) {
-      throw new Error('You must at least have 300 JACKBUX!')
+    if (userBal < robLimit) {
+      throw new Error(`You must at least have ${robLimit}!`)
     }
 
-    if (targetBal < 300) {
-      throw new Error('Your target must at least have 300 JACKBUX!')
+    if (targetBal < robLimit) {
+      throw new Error(`Your target must at least have ${robLimit} JACKBUX!`)
     }
 
-    let stealSuccess = random(1, 5)
+    let stealSuccess = random(1, 12)
     let stolenAmount = random(Math.floor(targetBal / 8), Math.floor(targetBal / 2))
     let lostAmount = random(Math.floor(userBal / 2), Math.floor(userBal))
 
@@ -70,7 +74,7 @@ export default defCommand({
         )
 
       addBalanceNeutral(mentionedUser.id, lostAmount)
-      subtractBalance(message.author.id, lostAmount)
+      subtractBankBalance(message.author.id, lostAmount)
 
       mentionedUser
         .send(
