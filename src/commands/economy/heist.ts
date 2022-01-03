@@ -20,7 +20,7 @@ import {
   unlockBank,
 } from '../../util/economy'
 
-const requiredAmount = 2000
+const requiredAmount = 10000
 const requiredUserCount = 1
 
 export default defCommand({

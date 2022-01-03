@@ -13,7 +13,7 @@ import {
   getBankBalance,
 } from '../../util/economy'
 
-const robLimit = 25000
+const robLimit = 10000
 
 export default defCommand({
   name: 'steal',
@@ -43,7 +43,7 @@ export default defCommand({
       throw new Error(`Your target must at least have ${robLimit} JACKBUX!`)
     }
 
-    let stealSuccess = random(1, 12)
+    let stealSuccess = random(1, 10)
     let stolenAmount = random(Math.floor(targetBal / 8), Math.floor(targetBal / 2))
     let lostAmount = random(Math.floor(userBal / 4), Math.floor(userBal / 2))
 
